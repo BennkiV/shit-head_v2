@@ -25,6 +25,7 @@ public class shitheadmain extends ApplicationAdapter {
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
 
+
 		card = new Rectangle();
 		card.x = 800/2-64/2;
 		card.y = 20;
