@@ -19,6 +19,14 @@ public class shitheadmain extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+
+		Deck deck = new Deck();
+		deck.fillDeck();
+		Cards test_card = deck.getCard();
+
+		System.out.println(test_card.getImageDirect() + " , " + test_card.getKind() + " , " + test_card.getValue());
+		deck.printDeck();
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
@@ -29,7 +37,7 @@ public class shitheadmain extends ApplicationAdapter {
 		card.width = 24;
 		card.height = 24;
 
-		cardImage = new Texture(Gdx.files.internal("PlayCard.png"));
+		cardImage = new Texture(Gdx.files.internal(test_card.getImageDirect()));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
 	}
