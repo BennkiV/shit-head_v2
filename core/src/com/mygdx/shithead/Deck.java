@@ -17,12 +17,12 @@ public class Deck {
                         setCard = new Cards();          // add all heart cards
                         setCard.setKind('H');
                         setCard.setValue(j);
-                        setCard.setImageDirect("Heart_"+ j +".png");
                         switch (j){
                             case(1):    setCard.setImageDirect("Heart_A.png"); break;
                             case(11):   setCard.setImageDirect("Heart_J.png"); break;
                             case(12):   setCard.setImageDirect("Heart_Q.png"); break;
                             case(13):   setCard.setImageDirect("Heart_K.png"); break;
+                            default:    setCard.setImageDirect("Heart_"+ j +".png");
                         }
                         card.add(setCard);
                     break;
@@ -30,12 +30,12 @@ public class Deck {
                         setCard = new Cards();          // add all ... cards
                         setCard.setKind('S');
                         setCard.setValue(j);
-                        setCard.setImageDirect("Spades_"+j+".png");
                         switch (j){
                             case(1):    setCard.setImageDirect("Spades_A.png"); break;
                             case(11):   setCard.setImageDirect("Spades_J.png"); break;
                             case(12):   setCard.setImageDirect("Spades_Q.png"); break;
                             case(13):   setCard.setImageDirect("Spades_K.png"); break;
+                            default:    setCard.setImageDirect("Spades_"+j+".png");
                         }
                         card.add(setCard);
                     break;
@@ -43,12 +43,12 @@ public class Deck {
                         setCard = new Cards();          // add all diamond cards
                         setCard.setKind('D');
                         setCard.setValue(j);
-                        setCard.setImageDirect("Diamond_"+j+".png");
                         switch (j){
                             case(1):    setCard.setImageDirect("Diamond_A.png"); break;
                             case(11):   setCard.setImageDirect("Diamond_J.png"); break;
                             case(12):   setCard.setImageDirect("Diamond_Q.png"); break;
                             case(13):   setCard.setImageDirect("Diamond_K.png"); break;
+                            default:    setCard.setImageDirect("Diamond_"+j+".png");
                         }
                         card.add(setCard);
                     break;
@@ -56,12 +56,12 @@ public class Deck {
                         setCard = new Cards();          // add all cross cards
                         setCard.setKind('C');
                         setCard.setValue(j);
-                        setCard.setImageDirect("Cross_"+j+".png");
                         switch (j){
                             case(1):    setCard.setImageDirect("Cross_A.png"); break;
                             case(11):   setCard.setImageDirect("Cross_J.png"); break;
                             case(12):   setCard.setImageDirect("Cross_Q.png"); break;
                             case(13):   setCard.setImageDirect("Cross_K.png"); break;
+                            default:    setCard.setImageDirect("Cross_"+j+".png");
                         }
                         card.add(setCard);
                     break;

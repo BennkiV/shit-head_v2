@@ -5,40 +5,57 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.awt.Rectangle;
+import java.util.ArrayList;
+
 
 public class shitheadmain extends ApplicationAdapter {
+	// Display resolution
+	private static float x_resolution = 1920, y_resolution = 1080;
+
+	// Player
+	private Player p1;
+
+	// Test
 	private Rectangle card;
+	private ArrayList<Rectangle> cardsRectangle;
 	private Texture cardImage;
 	private Texture cardBack;
 
+	private Button takeCardButton;
+
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+
 	
 	@Override
 	public void create () {
+		// Setup camera to render game
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, x_resolution, y_resolution);
+		batch = new SpriteBatch();
 
+		// Create necessary Items
 		Deck deck = new Deck();
 		deck.fillDeck();
 		Cards test_card = deck.getCard();
 
-		System.out.println(test_card.getImageDirect() + " , " + test_card.getKind() + " , " + test_card.getValue());
-		deck.printDeck();
+		p1 = new Player();
+		p1.setCards(deck);
+		p1.printStartHand();
 
-		// Setup camera to render game
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 1920, 1080);
-		batch = new SpriteBatch();
+		// Take Card Button
+		// ...
+
+
+
 
 		// testcard settings
-		card = new Rectangle();
-		card.x = 800/2-64/2;
-		card.y = 20;
-		card.width = 24;
-		card.height = 24;
+
 
 		// testcard image
 		cardImage = new Texture(Gdx.files.internal(test_card.getImageDirect()));
@@ -50,11 +67,15 @@ public class shitheadmain extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		int counter = 0;
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(cardImage, card.x, card.y);
+		for(Cards card : p1.HandCards) {
+			batch.draw(card.getCardTexture(), card.getRectangle().x+counter, card.getRectangle().y);
+			counter += 100;
+		}
 		batch.draw(cardBack, 40, 540);
 		batch.end();
 
@@ -62,8 +83,36 @@ public class shitheadmain extends ApplicationAdapter {
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touchPos);
-			card.x = (int) (touchPos.x-64/2);
-			card.y = (int) (touchPos.y-64/2);
+
+			// !!!
+			// Cards have same rectangle values, with 1st card all cards are touched
+			// need to overwork class
+			// !!!
+
+			// Try to touch all cards separately
+			/*for(Cards card : p1.HandCards){
+				if(card.getRectangle().x < touchPos.x && (card.getRectangle().width+card.getRectangle().x) > touchPos.x &&			// cards are not separated
+						card.getRectangle().y < touchPos.y && (card.getRectangle().width+card.getRectangle().y) > touchPos.y) {
+					card.getRectangle().x = (int) (touchPos.x - 165 / 2);
+					card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+				}
+			}*/
+			if(p1.HandCards.get(0).getRectangle().x < touchPos.x && (p1.HandCards.get(0).getRectangle().width+p1.HandCards.get(0).getRectangle().x) > touchPos.x &&			// cards are not separated
+					p1.HandCards.get(0).getRectangle().y < touchPos.y && (p1.HandCards.get(0).getRectangle().width+p1.HandCards.get(0).getRectangle().y) > touchPos.y){
+				p1.HandCards.get(0).getRectangle().x = (int) (touchPos.x - 165 / 2);
+				p1.HandCards.get(0).getRectangle().y = (int) (touchPos.y - 242 / 2);
+			}
+			if(p1.HandCards.get(1).getRectangle().x < touchPos.x && (p1.HandCards.get(1).getRectangle().width+p1.HandCards.get(1).getRectangle().x) > touchPos.x &&			// cards are not separated
+					p1.HandCards.get(1).getRectangle().y < touchPos.y && (p1.HandCards.get(1).getRectangle().width+p1.HandCards.get(1).getRectangle().y) > touchPos.y){
+				p1.HandCards.get(1).getRectangle().x = (int) (touchPos.x - 165 / 2);
+				p1.HandCards.get(1).getRectangle().y = (int) (touchPos.y - 242 / 2);
+			}
+			if(p1.HandCards.get(2).getRectangle().x < touchPos.x && (p1.HandCards.get(2).getRectangle().width+p1.HandCards.get(2).getRectangle().x) > touchPos.x &&			// cards are not separated
+					p1.HandCards.get(2).getRectangle().y < touchPos.y && (p1.HandCards.get(2).getRectangle().width+p1.HandCards.get(2).getRectangle().y) > touchPos.y){
+				p1.HandCards.get(2).getRectangle().x = (int) (touchPos.x - 165 / 2);
+				p1.HandCards.get(2).getRectangle().y = (int) (touchPos.y - 242 / 2);
+			}
+
 		}
 	}
 	

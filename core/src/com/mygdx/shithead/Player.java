@@ -25,6 +25,15 @@ public class Player {
         }
     }
 
+    public void setCards(Deck deck){
+        for(int i=0; i<3; i++) {
+            Cards setCards = deck.getCard();
+            HandCards.add(setCards);
+            upBoardCards.add(deck.getCard());
+            downBoardCards.add(deck.getCard());
+        }
+    }
+
     // play card, when player has less than 3 hand cards add
     public Cards playCards(Deck deck){
         // play card
