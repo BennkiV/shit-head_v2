@@ -13,6 +13,7 @@ import java.awt.Rectangle;
 public class shitheadmain extends ApplicationAdapter {
 	private Rectangle card;
 	private Texture cardImage;
+	private Texture cardBack;
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -27,19 +28,24 @@ public class shitheadmain extends ApplicationAdapter {
 		System.out.println(test_card.getImageDirect() + " , " + test_card.getKind() + " , " + test_card.getValue());
 		deck.printDeck();
 
+		// Setup camera to render game
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1920, 1080);
 		batch = new SpriteBatch();
 
+		// testcard settings
 		card = new Rectangle();
 		card.x = 800/2-64/2;
 		card.y = 20;
 		card.width = 24;
 		card.height = 24;
 
+		// testcard image
 		cardImage = new Texture(Gdx.files.internal(test_card.getImageDirect()));
+		cardBack = new Texture(Gdx.files.internal("CardBack.png"));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
+
 	}
 
 	@Override
@@ -49,6 +55,7 @@ public class shitheadmain extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		batch.draw(cardImage, card.x, card.y);
+		batch.draw(cardBack, 40, 540);
 		batch.end();
 
 		if(Gdx.input.isTouched()){
@@ -63,6 +70,7 @@ public class shitheadmain extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		cardBack.dispose();
 		cardImage.dispose();
 	}
 }

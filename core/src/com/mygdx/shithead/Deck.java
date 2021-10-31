@@ -69,7 +69,7 @@ public class Deck {
             }
         }
         // add the joker
-        for( int i= 0; i < 2; i++){
+        for( int i= 1; i < 3; i++){
             setCard = new Cards();
             setCard.setKind('J');
             setCard.setValue(i);
