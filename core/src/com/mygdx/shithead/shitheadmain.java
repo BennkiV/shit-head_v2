@@ -16,15 +16,12 @@ public class shitheadmain extends ApplicationAdapter {
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-
-	Texture img;
 	
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
-
 
 		card = new Rectangle();
 		card.x = 800/2-64/2;
@@ -35,7 +32,6 @@ public class shitheadmain extends ApplicationAdapter {
 		cardImage = new Texture(Gdx.files.internal("PlayCard.png"));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
-		img = new Texture("badlogic.jpg");
 	}
 
 	@Override
@@ -59,7 +55,6 @@ public class shitheadmain extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 		cardImage.dispose();
 	}
 }
