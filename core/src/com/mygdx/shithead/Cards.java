@@ -25,9 +25,16 @@ public class Cards {
         public void setImageDirect(String _direct){
             imageDirect = _direct;
             cardTexture = new Texture(Gdx.files.internal(imageDirect));
+        }
+
+        public void setRectangle(Rectangle _rectangle){
+            rectangle = _rectangle;
+        }
+
+        public void setRectangle(){
             rectangle = new Rectangle();
-            rectangle.x = 1920/2-1080/2;
-            rectangle.y = 1080/4;
+            rectangle.x = 0;
+            rectangle.y = 0;
             rectangle.width = 165;
             rectangle.height = 242;
         }
@@ -54,7 +61,17 @@ public class Cards {
         return rectangle;
     }
 
-    //  Print
+        // Other
+        public void editRectangle(float _x, float _y){
+            rectangle.x = _x;
+            rectangle.y = _y;
+    }
+
+        public void editTextureDownBoardCards(){
+            cardTexture = new Texture(Gdx.files.internal("CardBack.png"));
+        }
+
+        //  Print
         public void printCards(){
             System.out.printf("%c, %d\n", kind, value);
         }

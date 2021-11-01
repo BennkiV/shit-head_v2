@@ -48,6 +48,24 @@ public class shitheadmain extends ApplicationAdapter {
 		p1.setCards(deck);
 		p1.printStartHand();
 
+		// Rectangle Cards
+		int counter = 0;
+		for(Cards card : p1.downBoardCards){
+			card.editRectangle(counter, 40);
+			card.editTextureDownBoardCards();
+			counter += 170;
+		}
+		counter = 0;
+		for(Cards card : p1.upBoardCards){
+			card.editRectangle(counter, 0);
+			counter += 170;
+		}
+		counter = 0;
+		for(Cards card : p1.HandCards){
+			card.editRectangle(counter, 0);
+			counter += 170;
+		}
+
 		// Take Card Button
 		// ...
 
@@ -67,15 +85,21 @@ public class shitheadmain extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		int counter = 0;
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		for(Cards card : p1.HandCards) {
-			batch.draw(card.getCardTexture(), card.getRectangle().x+counter, card.getRectangle().y);
-			counter += 100;
+
+		for(Cards card : p1.downBoardCards) {
+			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
+		for(Cards card : p1.upBoardCards) {
+			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+		}
+		for(Cards card : p1.HandCards) {
+			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+		}
+
 		batch.draw(cardBack, 40, 540);
 		batch.end();
 
@@ -90,29 +114,33 @@ public class shitheadmain extends ApplicationAdapter {
 			// !!!
 
 			// Try to touch all cards separately
-			/*for(Cards card : p1.HandCards){
-				if(card.getRectangle().x < touchPos.x && (card.getRectangle().width+card.getRectangle().x) > touchPos.x &&			// cards are not separated
-						card.getRectangle().y < touchPos.y && (card.getRectangle().width+card.getRectangle().y) > touchPos.y) {
-					card.getRectangle().x = (int) (touchPos.x - 165 / 2);
-					card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+			if(p1.HandCards.size() != 0){
+				for(Cards card : p1.HandCards) {
+					if (card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
+							 card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
+						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
+						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+					}
 				}
-			}*/
-			if(p1.HandCards.get(0).getRectangle().x < touchPos.x && (p1.HandCards.get(0).getRectangle().width+p1.HandCards.get(0).getRectangle().x) > touchPos.x &&			// cards are not separated
-					p1.HandCards.get(0).getRectangle().y < touchPos.y && (p1.HandCards.get(0).getRectangle().width+p1.HandCards.get(0).getRectangle().y) > touchPos.y){
-				p1.HandCards.get(0).getRectangle().x = (int) (touchPos.x - 165 / 2);
-				p1.HandCards.get(0).getRectangle().y = (int) (touchPos.y - 242 / 2);
+			}	// after Hand is empty goto BoardCards
+			else if(p1.upBoardCards.size() != 0){
+				for(Cards card : p1.upBoardCards){
+					if (card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
+							card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
+						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
+						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+					}
+				}
 			}
-			if(p1.HandCards.get(1).getRectangle().x < touchPos.x && (p1.HandCards.get(1).getRectangle().width+p1.HandCards.get(1).getRectangle().x) > touchPos.x &&			// cards are not separated
-					p1.HandCards.get(1).getRectangle().y < touchPos.y && (p1.HandCards.get(1).getRectangle().width+p1.HandCards.get(1).getRectangle().y) > touchPos.y){
-				p1.HandCards.get(1).getRectangle().x = (int) (touchPos.x - 165 / 2);
-				p1.HandCards.get(1).getRectangle().y = (int) (touchPos.y - 242 / 2);
+			else if(p1.downBoardCards.size() != 0){
+				for(Cards card : p1.downBoardCards){
+					if (card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
+							card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
+						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
+						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+					}
+				}
 			}
-			if(p1.HandCards.get(2).getRectangle().x < touchPos.x && (p1.HandCards.get(2).getRectangle().width+p1.HandCards.get(2).getRectangle().x) > touchPos.x &&			// cards are not separated
-					p1.HandCards.get(2).getRectangle().y < touchPos.y && (p1.HandCards.get(2).getRectangle().width+p1.HandCards.get(2).getRectangle().y) > touchPos.y){
-				p1.HandCards.get(2).getRectangle().x = (int) (touchPos.x - 165 / 2);
-				p1.HandCards.get(2).getRectangle().y = (int) (touchPos.y - 242 / 2);
-			}
-
 		}
 	}
 	

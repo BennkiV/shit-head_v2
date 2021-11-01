@@ -1,5 +1,7 @@
 package com.mygdx.shithead;
 
+import com.badlogic.gdx.math.Rectangle;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -17,6 +19,7 @@ public class Deck {
                         setCard = new Cards();          // add all heart cards
                         setCard.setKind('H');
                         setCard.setValue(j);
+                        setCard.setRectangle();
                         switch (j){
                             case(1):    setCard.setImageDirect("Heart_A.png"); break;
                             case(11):   setCard.setImageDirect("Heart_J.png"); break;
@@ -30,6 +33,7 @@ public class Deck {
                         setCard = new Cards();          // add all ... cards
                         setCard.setKind('S');
                         setCard.setValue(j);
+                        setCard.setRectangle();
                         switch (j){
                             case(1):    setCard.setImageDirect("Spades_A.png"); break;
                             case(11):   setCard.setImageDirect("Spades_J.png"); break;
@@ -43,6 +47,7 @@ public class Deck {
                         setCard = new Cards();          // add all diamond cards
                         setCard.setKind('D');
                         setCard.setValue(j);
+                        setCard.setRectangle();
                         switch (j){
                             case(1):    setCard.setImageDirect("Diamond_A.png"); break;
                             case(11):   setCard.setImageDirect("Diamond_J.png"); break;
@@ -56,6 +61,7 @@ public class Deck {
                         setCard = new Cards();          // add all cross cards
                         setCard.setKind('C');
                         setCard.setValue(j);
+                        setCard.setRectangle();
                         switch (j){
                             case(1):    setCard.setImageDirect("Cross_A.png"); break;
                             case(11):   setCard.setImageDirect("Cross_J.png"); break;
@@ -70,9 +76,11 @@ public class Deck {
         }
         // add the joker
         for( int i= 1; i < 3; i++){
+
             setCard = new Cards();
             setCard.setKind('J');
             setCard.setValue(i);
+            setCard.setRectangle();
             setCard.setImageDirect("Joker_"+i+".png");
             card.add(setCard);
         }
@@ -92,6 +100,7 @@ public class Deck {
         randCard.setKind(card.get(CardIndex).getKind());
         randCard.setValue(card.get(CardIndex).getValue());
         randCard.setImageDirect(card.get(CardIndex).getImageDirect());
+        randCard.setRectangle(card.get(CardIndex).getRectangle());
         card.remove(CardIndex);
 
         return randCard;
