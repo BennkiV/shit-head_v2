@@ -114,12 +114,13 @@ public class shitheadmain extends ApplicationAdapter {
 			// !!!
 
 			// Try to touch all cards separately
+
 			if(p1.HandCards.size() != 0){
 				for(Cards card : p1.HandCards) {
-					if (card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
+					if(card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
 							 card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
-						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
-						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+						card.getRectangle().x = (int) (touchPos.x - (card.rectangle.x + card.rectangle.width) - card.rectangle.width);
+						card.getRectangle().y = (int) (touchPos.y - 242/2);
 					}
 				}
 			}	// after Hand is empty goto BoardCards
