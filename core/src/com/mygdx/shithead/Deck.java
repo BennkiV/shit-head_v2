@@ -1,5 +1,7 @@
 package com.mygdx.shithead;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Random;
 
 public class Deck {
     ArrayList<Cards> card = new ArrayList<>();
+    private Texture deckTexture;
 
     // fillDeck funk
     public void fillDeck(){
@@ -89,6 +92,7 @@ public class Deck {
     // add card to the discard pile
     public void discard(Cards discardCard){
         card.add(discardCard);
+        deckTexture = discardCard.getCardTexture();
     }
 
     // returns a random card and "delete" it in the deck
@@ -111,6 +115,15 @@ public class Deck {
         return card;
     }
 
+    // Edit Texture
+    public void editTexture(String textureName){
+        deckTexture = new Texture(Gdx.files.internal(textureName));
+    }
+
+    // Get Texture
+    public Texture getDeckTexture(){
+        return deckTexture;
+    }
     // get ability          // ???
 /*    public void getAbility(Cards _card){
         if(_card.getKind() != 'J'){
