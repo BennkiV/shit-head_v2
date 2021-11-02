@@ -3,7 +3,7 @@ package com.mygdx.shithead.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mygdx.shithead.shitheadmain;
+import com.mygdx.shithead.shitheadMain;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -17,6 +17,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new shitheadmain();
+                return new shitheadMain();
         }
 }
