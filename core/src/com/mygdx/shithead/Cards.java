@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Cards {
-        protected char kind;
+        protected String kind;
         protected int value;
         protected String imageDirect;
         protected Texture cardTexture;
@@ -18,7 +18,7 @@ public class Cards {
             value = _value;
         }
 
-        public void setKind(char _kind){
+        public void setKind(String _kind){
             kind = _kind;
         }
 
@@ -45,7 +45,7 @@ public class Cards {
             return value;
         }
 
-        public char getKind(){
+        public String getKind(){
             return kind;
         }
 
@@ -71,8 +71,18 @@ public class Cards {
             cardTexture = new Texture(Gdx.files.internal("CardBack.png"));
         }
 
+        public void editTextureBack(){
+            switch (value){
+                case(1):    cardTexture = new Texture(Gdx.files.internal(kind+"_A.png")); break;
+                case(11):   cardTexture = new Texture(Gdx.files.internal(kind+"_J.png")); break;
+                case(12):   cardTexture = new Texture(Gdx.files.internal(kind+"_Q.png")); break;
+                case(13):   cardTexture = new Texture(Gdx.files.internal(kind+"_K.png")); break;
+                default: cardTexture = new Texture(Gdx.files.internal(kind+"_"+value+".png"));
+            }
+        }
+
         //  Print
         public void printCards(){
-            System.out.printf("%c, %d\n", kind, value);
+            System.out.printf("%s, %d\n", kind, value);
         }
 }

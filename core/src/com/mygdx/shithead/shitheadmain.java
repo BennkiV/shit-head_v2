@@ -7,26 +7,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.utils.ScreenUtils;
-
-import java.util.ArrayList;
 
 
 public class shitheadmain extends ApplicationAdapter {
 	// Display resolution
-	private static float x_resolution = 1920, y_resolution = 1080;
+	private static final float x_resolution = 1920, y_resolution = 1080;
 
 	// Player
 	private Player p1;
 
-	// Test
-	private Rectangle card;
-	private ArrayList<Rectangle> cardsRectangle;
-	private Texture cardImage;
-	private Texture cardBack;
+	// GAme
+	private Deck deck;
 
-	private Button takeCardButton;
+	// Test
+	private Rectangle discardPile;
+	private Texture discardPileTexture;
+	private Texture cardBack;
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
@@ -40,15 +37,15 @@ public class shitheadmain extends ApplicationAdapter {
 		batch = new SpriteBatch();
 
 		// Create necessary Items
-		Deck deck = new Deck();
+		deck = new Deck();
 		deck.fillDeck();
-		Cards test_card = deck.getCard();
 
 		p1 = new Player();
 		p1.setCards(deck);
 		p1.printStartHand();
 
 		// Rectangle Cards
+			// Cards of Player
 		int counter = 0;
 		for(Cards card : p1.downBoardCards){
 			card.editRectangle(counter, 40);
@@ -65,6 +62,8 @@ public class shitheadmain extends ApplicationAdapter {
 			card.editRectangle(counter, 0);
 			counter += 170;
 		}
+			// Cards of Game
+		discardPile = new Rectangle(205,540, 165,242);
 
 		// Take Card Button
 		// ...
@@ -76,8 +75,8 @@ public class shitheadmain extends ApplicationAdapter {
 
 
 		// testcard image
-		cardImage = new Texture(Gdx.files.internal(test_card.getImageDirect()));
 		cardBack = new Texture(Gdx.files.internal("CardBack.png"));
+		discardPileTexture = new Texture(Gdx.files.internal("badlogic.jpg"));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
 
@@ -90,6 +89,9 @@ public class shitheadmain extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
+		// draw cards
+		batch.draw(cardBack, 40, 540);
+		batch.draw(discardPileTexture, discardPile.x, discardPile.y);
 		for(Cards card : p1.downBoardCards) {
 			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
@@ -99,8 +101,6 @@ public class shitheadmain extends ApplicationAdapter {
 		for(Cards card : p1.HandCards) {
 			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
-
-		batch.draw(cardBack, 40, 540);
 		batch.end();
 
 		if(Gdx.input.isTouched()){
@@ -113,13 +113,13 @@ public class shitheadmain extends ApplicationAdapter {
 			// need to overwork class
 			// !!!
 
+			// PLAYER CARDS
 			// Try to touch all cards separately
-
 			if(p1.HandCards.size() != 0){
 				for(Cards card : p1.HandCards) {
 					if(card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
 							 card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
-						card.getRectangle().x = (int) (touchPos.x - (card.rectangle.x + card.rectangle.width) - card.rectangle.width);
+						card.getRectangle().x = (int) (touchPos.x - 165/2);
 						card.getRectangle().y = (int) (touchPos.y - 242/2);
 					}
 				}
@@ -130,6 +130,7 @@ public class shitheadmain extends ApplicationAdapter {
 							card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
 						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
 						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
+
 					}
 				}
 			}
@@ -142,6 +143,12 @@ public class shitheadmain extends ApplicationAdapter {
 					}
 				}
 			}
+
+			// GAME CARDS
+			if(discardPile.x < touchPos.x && discardPile.x+discardPile.width > touchPos.x &&
+					discardPile.y < touchPos.y && discardPile.y + discardPile.height > touchPos.y){
+
+			}
 		}
 	}
 	
@@ -149,6 +156,6 @@ public class shitheadmain extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		cardBack.dispose();
-		cardImage.dispose();
+		discardPileTexture.dispose();
 	}
 }

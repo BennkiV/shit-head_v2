@@ -59,7 +59,7 @@ public class Player {
         Cards ChooseCard = new Cards();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the value");
-        ChooseCard.setKind(scanner.next().charAt(0));
+        ChooseCard.setKind(scanner.next());
         System.out.println("Enter the kind of card");
         ChooseCard.setValue(scanner.nextInt());
 

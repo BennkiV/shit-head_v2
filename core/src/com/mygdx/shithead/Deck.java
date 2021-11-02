@@ -17,7 +17,7 @@ public class Deck {
                 switch (i) {
                     case (0):
                         setCard = new Cards();          // add all heart cards
-                        setCard.setKind('H');
+                        setCard.setKind("Heart");
                         setCard.setValue(j);
                         setCard.setRectangle();
                         switch (j){
@@ -31,7 +31,7 @@ public class Deck {
                     break;
                     case (1):
                         setCard = new Cards();          // add all ... cards
-                        setCard.setKind('S');
+                        setCard.setKind("Spades");
                         setCard.setValue(j);
                         setCard.setRectangle();
                         switch (j){
@@ -45,7 +45,7 @@ public class Deck {
                     break;
                     case (2):
                         setCard = new Cards();          // add all diamond cards
-                        setCard.setKind('D');
+                        setCard.setKind("Diamond");
                         setCard.setValue(j);
                         setCard.setRectangle();
                         switch (j){
@@ -59,7 +59,7 @@ public class Deck {
                     break;
                     case (3):
                         setCard = new Cards();          // add all cross cards
-                        setCard.setKind('C');
+                        setCard.setKind("Cross");
                         setCard.setValue(j);
                         setCard.setRectangle();
                         switch (j){
@@ -78,7 +78,7 @@ public class Deck {
         for( int i= 1; i < 3; i++){
 
             setCard = new Cards();
-            setCard.setKind('J');
+            setCard.setKind("Joker");
             setCard.setValue(i);
             setCard.setRectangle();
             setCard.setImageDirect("Joker_"+i+".png");
