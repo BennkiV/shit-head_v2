@@ -71,7 +71,8 @@ public class Cards {
             cardTexture = new Texture(Gdx.files.internal("CardBack.png"));
         }
 
-        public void editTextureBack(){
+        // restores the texture of the card
+        public void restoreTexture(){
             switch (value){
                 case(1):    cardTexture = new Texture(Gdx.files.internal(kind+"_A.png")); break;
                 case(11):   cardTexture = new Texture(Gdx.files.internal(kind+"_J.png")); break;

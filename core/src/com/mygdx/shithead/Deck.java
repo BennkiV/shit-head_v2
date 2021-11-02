@@ -124,7 +124,8 @@ public class Deck {
     public Texture getDeckTexture(){
         return deckTexture;
     }
-    // get ability          // ???
+
+    // get ability          // ??? need to be implemented in Cards !!
 /*    public void getAbility(Cards _card){
         if(_card.getKind() != 'J'){
             switch(_card.getValue()){

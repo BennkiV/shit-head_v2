@@ -152,12 +152,12 @@ public class shitheadMain extends ApplicationAdapter {
 				}
 
 				// if handCard is on disposePile
-	/*			if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
+				 if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
 						discardPileRect.y < touchPos.y && discardPileRect.y + discardPileRect.height > touchPos.y){
 					// play card and put it on discard pile
-					discardPile.discard(p1.playCards(deck, p1.HandCards.get(0)));		// works but not with for-loop :(
+					discardPile.discard(p1.playCards(deck, discardPile, p1.HandCards.get(0)));		// works but not with for-loop :(
 				}
-	*/		}
+		}
 
 			// Test card 1
 			if(p1.HandCards.get(1).getRectangle().x < touchPos.x && (p1.HandCards.get(1).getRectangle().width + p1.HandCards.get(1).getRectangle().x) > touchPos.x &&            // cards are not separated
@@ -182,17 +182,14 @@ public class shitheadMain extends ApplicationAdapter {
 				}
 
 				// if handCard is on disposePile
-	/*			if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
+				if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
 						discardPileRect.y < touchPos.y && discardPileRect.y + discardPileRect.height > touchPos.y){
 					// play card and put it on discard pile
-					discardPile.discard(p1.playCards(deck, p1.HandCards.get(1)));		// works but not with for-loop :(
+					discardPile.discard(p1.playCards(deck, discardPile, p1.HandCards.get(1)));		// works but not with for-loop :(
 				}
-	*/		}
-
-			for(Cards card : p1.HandCards){
-				if (card.getRectangle().overlaps(discardPileRect))
-					p1.playCards(deck, discardPile, card);
 			}
+
+
 			//=============================================================================================================
 
 /*			// Cards are all selected by discard !!!
@@ -244,9 +241,31 @@ public class shitheadMain extends ApplicationAdapter {
 	}
 
 	// check if touched card is overlap another :/
-	public void checkOverlap(Deck deck){
-		for(Cards card : deck){
-
+	public void checkOverlap(ArrayList<Cards> deck){
+		for(Cards _card : deck){
+			for(Cards _card2 : deck){
+				if(_card.getRectangle().overlaps(_card2.getRectangle())){
+					// if card is right push left
+					if(_card.getRectangle().x <= _card2.getRectangle().x){
+						if(_card2.getRectangle().x+_card2.getRectangle().width <= x_resolution) 	// card left screen
+							_card2.getRectangle().x = _card.getRectangle().x + 205;				// move to right of card
+						else
+							_card2.getRectangle().x = x_resolution - 165*2;
+					}else{
+						if(_card2.getRectangle().x <= 0)
+							_card2.getRectangle().x = 165*2;
+						else
+							_card2.getRectangle().x = _card.getRectangle().x - 205;
+					}
+					// if card is above push down
+					if(_card.getRectangle().y <= _card2.getRectangle().y){
+						if(_card2.getRectangle().y + _card2.getRectangle().height <= y_resolution)
+							_card2.getRectangle().y = _card.getRectangle().y + 30;
+					}else{
+						_card2.getRectangle().y = _card.getRectangle().y - 30;
+					}
+				}
+			}
 		}
 	}
 }
