@@ -173,6 +173,7 @@ public class shitheadMain extends ApplicationAdapter {
 		card.getRectangle().x = x - 165 / 2;
 		card.getRectangle().y = y - 242 / 2;
 		if(card.getRectangle().y >= y_resolution/3) {
+			// TODO: card only can be played if card > discard pile
 			p1.playCards(deck, discardPile, card);
 			System.out.println(card.getKind() + " , " + card.getValue());
 		}

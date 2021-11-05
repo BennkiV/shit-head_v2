@@ -41,7 +41,8 @@ public class Player {
             while (HandCards.size() <= 3) {
                 Cards takeCard = deck.getCard();
                 // sets card to location next to the last card
-                takeCard.editRectangle(HandCards.get(HandCards.size() - 1).getRectangle().x + 82.5f /*170 old*/, HandCards.get(HandCards.size() - 1).getRectangle().y);
+                takeCard.editRectangle(HandCards.get(HandCards.size() - 1).getRectangle().x + 82.5f /*170 old*/,
+                        HandCards.get(HandCards.size() - 1).getRectangle().y);
                 HandCards.add(takeCard);
             }
             HandCards.remove(card);
