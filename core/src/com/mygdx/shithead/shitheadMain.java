@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
-
 public class shitheadMain extends ApplicationAdapter {
 	// Display resolution
 	private static final float x_resolution = 1920, y_resolution = 1080;
@@ -23,13 +22,13 @@ public class shitheadMain extends ApplicationAdapter {
 	private Deck deck;
 	private Deck discardPile;
 
-	// Test
+	// Draw elements
 	private Rectangle discardPileRect;
-	private Texture cardBack;
-
+	private Texture discardPileTex;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 
+	private CardCollisionDetection CCD;
 	
 	@Override
 	public void create () {
@@ -42,6 +41,7 @@ public class shitheadMain extends ApplicationAdapter {
 		discardPile = new Deck();
 		discardPile.editTexture("DiscardPile.png");
 		deck = new Deck();
+		deck.editTexture("CardBack.png");
 		deck.fillDeck();
 
 		p1 = new Player();
@@ -54,7 +54,7 @@ public class shitheadMain extends ApplicationAdapter {
 		for(Cards card : p1.downBoardCards){
 			card.editRectangle(counter, 40);
 			card.editTextureDownBoardCards();
-			counter += 170;
+			counter +=  170;
 		}
 		counter = 0;
 		for(Cards card : p1.upBoardCards){
@@ -64,25 +64,28 @@ public class shitheadMain extends ApplicationAdapter {
 		counter += 170;
 		for(Cards card : p1.HandCards){
 			card.editRectangle(counter, 0);
-			counter += 170;
+			counter +=  82.5f; // 170;
 		}
 			// Cards of Game
-		discardPileRect = new Rectangle(220,540, 165,242);
-
 		// Take Card Button // maybe not relevant
 		// ...
 
-
-
+		System.out.println(p1.HandCards.get(0).getCardTexture().getDepth());
 
 		// testcard settings
 
 
 		// testcard image
-		cardBack = new Texture(Gdx.files.internal("CardBack.png"));
+		discardPileTex = new Texture(Gdx.files.internal("DiscardPile.png"));
 		//		discardPileTexture = new Texture(Gdx.files.internal("DiscardPile.png"));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
+
+
+
+		//// TEST
+		CCD = new CardCollisionDetection();
+		Gdx.input.setInputProcessor(CCD);
 
 	}
 
@@ -94,8 +97,8 @@ public class shitheadMain extends ApplicationAdapter {
 		batch.begin();
 
 		// draw cards
-		batch.draw(cardBack, 40, 540);
-		batch.draw(discardPile.getDeckTexture(), discardPileRect.x, discardPileRect.y);
+		batch.draw(discardPile.getDeckTexture(), 215, y_resolution/2);
+		batch.draw(deck.getDeckTexture(), 40, y_resolution/2);
 		for(Cards card : p1.downBoardCards) {
 			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
@@ -107,165 +110,71 @@ public class shitheadMain extends ApplicationAdapter {
 		}
 		batch.end();
 
+
+		batch.begin();
+		// detect if card is touched
+		// cardIsDragged(): drag card and if card.y over y_resolution play
+		cardIsTouched();
+
+		batch.end();
+	}
+
+
+
+	@Override
+	public void dispose () {
+		batch.dispose();
+		discardPileTex.dispose();
+	}
+
+	//____________________________________________________________
+	// EXTRA FUNCTIONS ===========================================
+
+	public void cardIsTouched(){
 		if(Gdx.input.isTouched()){
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touchPos);
 
-			// !!!
-			// Cards have same rectangle values, with 1st card all cards are touched
-			// need to overwork class
-			// !!!
-
-			// PLAYER CARDS
-			// Try to touch all cards separately
-
-
-			// TEST FOR FIRST CARD AND ONE AT A TIME !!!
-			// Test card 0		======================================================================================================
-			if(p1.HandCards.get(0).getRectangle().x < touchPos.x && (p1.HandCards.get(0).getRectangle().width + p1.HandCards.get(0).getRectangle().x) > touchPos.x &&            // cards are not separated
-					p1.HandCards.get(0).getRectangle().y < touchPos.y && (p1.HandCards.get(0).getRectangle().width + p1.HandCards.get(0).getRectangle().y) > touchPos.y) {
-				p1.HandCards.get(0).getRectangle().x = (int) (touchPos.x - 165/2);
-				p1.HandCards.get(0).getRectangle().y = (int) (touchPos.y - 242/2);
-
-				// overlap detection for card 0 and 1
-				if(p1.HandCards.get(0).getRectangle().overlaps(p1.HandCards.get(1).getRectangle())){
-					// if card is right push left
-					if(p1.HandCards.get(0).getRectangle().x <= p1.HandCards.get(1).getRectangle().x){
-						if(p1.HandCards.get(1).getRectangle().x+p1.HandCards.get(1).getRectangle().width <= x_resolution) 	// card left screen
-							p1.HandCards.get(1).getRectangle().x = p1.HandCards.get(0).getRectangle().x + 205;				// move to right of card
-						else
-							p1.HandCards.get(1).getRectangle().x = x_resolution - 165*2;
-					}else{
-						if(p1.HandCards.get(1).getRectangle().x <= 0)
-							p1.HandCards.get(1).getRectangle().x = 165*2;
-						else
-							p1.HandCards.get(1).getRectangle().x = p1.HandCards.get(0).getRectangle().x - 205;
-					}
-					// if card is above push down
-					if(p1.HandCards.get(0).getRectangle().y <= p1.HandCards.get(1).getRectangle().y){
-						if(p1.HandCards.get(1).getRectangle().y + p1.HandCards.get(1).getRectangle().height <= y_resolution)
-						p1.HandCards.get(1).getRectangle().y = p1.HandCards.get(0).getRectangle().y + 30;
-					}else{
-						p1.HandCards.get(1).getRectangle().y = p1.HandCards.get(0).getRectangle().y - 30;
+			// Make cards playable by moving up
+			if(p1.HandCards.size() != 0) {
+				for (Cards card : p1.HandCards) {
+					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
+						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+						cardIsDragged(card, touchPos.x, touchPos.y);
+						break;	// brake if card is touched or played
 					}
 				}
-
-				// if handCard is on disposePile
-				 if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
-						discardPileRect.y < touchPos.y && discardPileRect.y + discardPileRect.height > touchPos.y){
-					// play card and put it on discard pile
-					discardPile.discard(p1.playCards(deck, discardPile, p1.HandCards.get(0)));		// works but not with for-loop :(
-				}
-		}
-
-			// Test card 1
-			if(p1.HandCards.get(1).getRectangle().x < touchPos.x && (p1.HandCards.get(1).getRectangle().width + p1.HandCards.get(1).getRectangle().x) > touchPos.x &&            // cards are not separated
-					p1.HandCards.get(1).getRectangle().y < touchPos.y && (p1.HandCards.get(1).getRectangle().width + p1.HandCards.get(1).getRectangle().y) > touchPos.y) {
-				p1.HandCards.get(1).getRectangle().x = (int) (touchPos.x - 165/2);
-				p1.HandCards.get(1).getRectangle().y = (int) (touchPos.y - 242/2);
-
-				// overlap detection
-				if(p1.HandCards.get(1).getRectangle().overlaps(p1.HandCards.get(0).getRectangle())){
-					// if card is right push left
-					if(p1.HandCards.get(1).getRectangle().x <= p1.HandCards.get(0).getRectangle().x){
-						p1.HandCards.get(0).getRectangle().x = p1.HandCards.get(1).getRectangle().x + 205;
-					}else{
-						p1.HandCards.get(0).getRectangle().x = p1.HandCards.get(1).getRectangle().x - 205;
-					}
-					// if card is above push down
-					if(p1.HandCards.get(1).getRectangle().y <= p1.HandCards.get(0).getRectangle().y){
-						p1.HandCards.get(0).getRectangle().y = p1.HandCards.get(1).getRectangle().y + 30;
-					}else{
-						p1.HandCards.get(0).getRectangle().y = p1.HandCards.get(1).getRectangle().y - 30;
+			}else
+			if(p1.upBoardCards.size() != 0) {
+				for (Cards card : p1.upBoardCards) {
+					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
+						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+						cardIsDragged(card, touchPos.x, touchPos.y);
+						break;
 					}
 				}
-
-				// if handCard is on disposePile
-				if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
-						discardPileRect.y < touchPos.y && discardPileRect.y + discardPileRect.height > touchPos.y){
-					// play card and put it on discard pile
-					discardPile.discard(p1.playCards(deck, discardPile, p1.HandCards.get(1)));		// works but not with for-loop :(
-				}
-			}
-
-
-			//=============================================================================================================
-
-/*			// Cards are all selected by discard !!!
-			if(p1.HandCards.size() != 0){
-				for(Cards card : p1.HandCards) {
-					if(card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
-							 card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
-						card.getRectangle().x = (int) (touchPos.x - 165/2);
-						card.getRectangle().y = (int) (touchPos.y - 242/2);
-
-						// if handCard is on disposePile
-						if(discardPileRect.x < touchPos.x && discardPileRect.x+discardPileRect.width > touchPos.x &&
-								discardPileRect.y < touchPos.y && discardPileRect.y + discardPileRect.height > touchPos.y){
-							// play card and put it on discard pile
-							discardPile.discard(p1.playCards(deck, card));
-						}
-					}
-				}
-			}	// after Hand is empty goto BoardCards
-			else if(p1.upBoardCards.size() != 0){
-				for(Cards card : p1.upBoardCards){
-					if (card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
-							card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
-						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
-						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
-
+			}else
+			if(p1.downBoardCards.size() != 0) {
+				for (Cards card : p1.downBoardCards) {
+					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
+						cardIsDragged(card, touchPos.x, touchPos.y);
+						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+						break;
 					}
 				}
 			}
-			else if(p1.downBoardCards.size() != 0){
-				for(Cards card : p1.downBoardCards){
-					if (card.getRectangle().x < touchPos.x && (card.getRectangle().width + card.getRectangle().x) > touchPos.x &&            // cards are not separated
-							card.getRectangle().y < touchPos.y && (card.getRectangle().width + card.getRectangle().y) > touchPos.y) {
-						card.getRectangle().x = (int) (touchPos.x - 165 / 2);
-						card.getRectangle().y = (int) (touchPos.y - 242 / 2);
-					}
-				}
-			}
-*/
-			// GAME CARDS
-
 		}
 	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		cardBack.dispose();
-	}
 
-	// check if touched card is overlap another :/
-	public void checkOverlap(ArrayList<Cards> deck){
-		for(Cards _card : deck){
-			for(Cards _card2 : deck){
-				if(_card.getRectangle().overlaps(_card2.getRectangle())){
-					// if card is right push left
-					if(_card.getRectangle().x <= _card2.getRectangle().x){
-						if(_card2.getRectangle().x+_card2.getRectangle().width <= x_resolution) 	// card left screen
-							_card2.getRectangle().x = _card.getRectangle().x + 205;				// move to right of card
-						else
-							_card2.getRectangle().x = x_resolution - 165*2;
-					}else{
-						if(_card2.getRectangle().x <= 0)
-							_card2.getRectangle().x = 165*2;
-						else
-							_card2.getRectangle().x = _card.getRectangle().x - 205;
-					}
-					// if card is above push down
-					if(_card.getRectangle().y <= _card2.getRectangle().y){
-						if(_card2.getRectangle().y + _card2.getRectangle().height <= y_resolution)
-							_card2.getRectangle().y = _card.getRectangle().y + 30;
-					}else{
-						_card2.getRectangle().y = _card.getRectangle().y - 30;
-					}
-				}
-			}
+	// move card and play if card.y >= y_resolution/3
+	// TODO: add a algorithm to set the card back to its place if not played
+	public void cardIsDragged(Cards card, float x, float y){
+		card.getRectangle().x = x - 165 / 2;
+		card.getRectangle().y = y - 242 / 2;
+		if(card.getRectangle().y >= y_resolution/3) {
+			p1.playCards(deck, discardPile, card);
+			System.out.println(card.getKind() + " , " + card.getValue());
 		}
 	}
 }

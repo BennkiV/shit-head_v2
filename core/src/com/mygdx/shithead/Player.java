@@ -35,43 +35,31 @@ public class Player {
     }
 
     // play card, when player has less than 3 hand cards add
-    public Cards playCards(Deck deck, Deck discardPile, Cards card){
-        // play card
-        Cards playCard = card;
-        discardPile.discard(playCard);
-
+    public boolean playCards(Deck deck, Deck discardPile, Cards card){
         // get cards if less than 3
-        while(HandCards.size() < 3){
-            Cards takeCard = deck.getCard();
-            // sets card to location next to the last card
-            takeCard.editRectangle(HandCards.get(HandCards.size()-1).getRectangle().x + 170, HandCards.get(HandCards.size()-1).getRectangle().y);
-            HandCards.add(takeCard);
+        if(HandCards.size() != 0 && deck.card.size() != 0) {
+            while (HandCards.size() <= 3) {
+                Cards takeCard = deck.getCard();
+                // sets card to location next to the last card
+                takeCard.editRectangle(HandCards.get(HandCards.size() - 1).getRectangle().x + 82.5f /*170 old*/, HandCards.get(HandCards.size() - 1).getRectangle().y);
+                HandCards.add(takeCard);
+            }
+            HandCards.remove(card);
+        }else if(upBoardCards.size() != 0){
+            upBoardCards.remove(card);
+        }else if(downBoardCards.size() != 0){
+            card.restoreTexture();
+            downBoardCards.remove(card);
         }
 
-        HandCards.remove(card);
-        return playCard;
+        discardPile.discard(card);
+
+        return true;
     }
 
-/*    public Cards playCards(Deck deck, Cards card){
-        // play card
-        Cards playCard = card;
-
-
-        // get cards if less than 3
-        while(HandCards.size() < 3){
-            Cards takeCard = deck.getCard();
-            // sets card to location next to the last card
-            takeCard.editRectangle(HandCards.get(HandCards.size()-1).getRectangle().x + 170, HandCards.get(HandCards.size()-1).getRectangle().y);
-            HandCards.add(takeCard);
-        }
-
-        HandCards.remove(card);
-        return playCard;
-    }
-*/
     // if player can't play
     public void takeDiscardPile(Deck discardPile){
-        if(discardPile != null) {
+        if(discardPile != null || discardPile.card.size() > 0) {
             HandCards.addAll(discardPile.returnCards());
         }
     }
