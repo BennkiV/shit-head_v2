@@ -44,8 +44,9 @@ public class Player {
     }
 
     // if player can't play
+    // TODO: bug!!!!!!!
     public void takeDiscardPile(Deck discardPile){
-        if(discardPile != null || discardPile.card.size() > 0) {
+        if(discardPile != null && discardPile.card.size() > 0) {
             HandCards.addAll(discardPile.returnCards());
         }
     }
@@ -53,9 +54,9 @@ public class Player {
 // =============================================================
 // START SORT TEST
 
-    // TODO: need overwork, is to complicated and don't do it correct
+    // TODO: need overwork, is to complicated
     // sort hand cards for better overview
-    public void sortHandCards(){
+    public void sortHandCards(float x_resolution){
 
         ArrayList<Cards> TempHeart = new ArrayList<>();
         ArrayList<Cards> TempSpades = new ArrayList<>();
@@ -84,13 +85,6 @@ public class Player {
         }
 
 
-
-        printList(TempCross);
-        printList(TempDiamond);
-        printList(TempSpades);
-        printList(TempHeart);
-        printList(TempJoker);
-
         sortList(TempCross);
         sortList((TempDiamond));
         sortList(TempHeart);
@@ -111,8 +105,14 @@ public class Player {
         mergeList(TempJoker);
 
         int counter = 680;
+        int y = 0;
         for(Cards card : HandCards){
-            card.editRectangle(counter, 0);
+            card.editRectangle(counter, y);
+            // if card is out of bounds reset to card0 and +1
+            if(card.getRectangle().x + card.getRectangle().width + 680 >= x_resolution){
+                counter = 590;
+                y = 60;
+            }
             counter += 90;
         }
 
@@ -135,13 +135,6 @@ public class Player {
         }
     }
 
-    public void printList(ArrayList<Cards> list){
-        if(list.size() > 0) {
-            for (Cards c : list) {
-                System.out.println(c.getKind() + " , " + c.getValue());
-            }
-        }
-    }
 
 // END SORT
 //=====================================================================

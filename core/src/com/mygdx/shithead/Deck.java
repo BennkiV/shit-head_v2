@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class Deck {
     ArrayList<Cards> card = new ArrayList<>();
+    Rectangle rectangle = new Rectangle();
     private Texture deckTexture;
 
     // fillDeck funk
@@ -113,6 +114,14 @@ public class Deck {
     // return deck
     public ArrayList<Cards> returnCards(){
         return card;
+    }
+
+    public void setRectangle(float x, float y){
+        rectangle.set(x, y, 165, 242);
+    }
+
+    public Rectangle getRectangle(){
+        return rectangle;
     }
 
     // Edit Texture

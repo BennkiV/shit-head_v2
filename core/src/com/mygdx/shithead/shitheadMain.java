@@ -40,6 +40,7 @@ public class shitheadMain extends ApplicationAdapter {
 		// Create necessary Items
 		discardPile = new Deck();
 		discardPile.editTexture("DiscardPile.png");
+		discardPile.setRectangle(215, y_resolution/2);
 		deck = new Deck();
 		deck.editTexture("CardBack.png");
 		deck.fillDeck();
@@ -67,7 +68,7 @@ public class shitheadMain extends ApplicationAdapter {
 			counter +=  82.5f; // 170;
 		}
 
-		p1.sortHandCards();
+		p1.sortHandCards(x_resolution);
 			// Cards of Game
 		// Take Card Button // maybe not relevant
 		// ...
@@ -99,7 +100,7 @@ public class shitheadMain extends ApplicationAdapter {
 		batch.begin();
 
 		// draw cards
-		batch.draw(discardPile.getDeckTexture(), 215, y_resolution/2);
+		batch.draw(discardPile.getDeckTexture(), discardPile.getRectangle().x, discardPile.getRectangle().y);
 		batch.draw(deck.getDeckTexture(), 40, y_resolution/2);
 		for(Cards card : p1.downBoardCards) {
 			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
@@ -167,6 +168,9 @@ public class shitheadMain extends ApplicationAdapter {
 					}
 				}
 			}
+			if(discardPile.getRectangle().contains(touchPos.x, touchPos.y)){
+				p1.takeDiscardPile(discardPile);
+			}
 		}
 	}
 	// move card and play if card.y >= y_resolution/3
@@ -176,7 +180,7 @@ public class shitheadMain extends ApplicationAdapter {
 		if(card.getRectangle().y >= y_resolution/3) {
 			// TODO: card only can be played if card > discard pile
 			p1.playCards(deck, discardPile, card);
-			p1.sortHandCards();
+			p1.sortHandCards(x_resolution);
 		}
 	}
 }
