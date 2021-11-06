@@ -94,6 +94,7 @@ public class shitheadMain extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		boolean start = true;
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -102,14 +103,17 @@ public class shitheadMain extends ApplicationAdapter {
 		// draw cards
 		batch.draw(discardPile.getDeckTexture(), discardPile.getRectangle().x, discardPile.getRectangle().y);
 		batch.draw(deck.getDeckTexture(), 40, y_resolution/2);
-		for(Cards card : p1.downBoardCards) {
-			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-		}
-		for(Cards card : p1.upBoardCards) {
-			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-		}
-		for(Cards card : p1.HandCards) {
-			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+		if(start) {
+			for (Cards card : p1.downBoardCards) {
+				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+			}
+			for (Cards card : p1.upBoardCards) {
+				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+			}
+			for (Cards card : p1.HandCards) {
+				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+			}
+			start = false;
 		}
 		batch.end();
 
@@ -170,6 +174,7 @@ public class shitheadMain extends ApplicationAdapter {
 			}
 			if(discardPile.getRectangle().contains(touchPos.x, touchPos.y)){
 				p1.takeDiscardPile(discardPile);
+				p1.sortHandCards(x_resolution);
 			}
 		}
 	}

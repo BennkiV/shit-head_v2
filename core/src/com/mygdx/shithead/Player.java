@@ -47,8 +47,11 @@ public class Player {
     // TODO: bug!!!!!!!
     public void takeDiscardPile(Deck discardPile){
         if(discardPile != null && discardPile.card.size() > 0) {
-            HandCards.addAll(discardPile.returnCards());
+            for(Cards card : discardPile.card){
+                HandCards.add(card);
+            }
         }
+        discardPile.editTexture("DiscardPile.png");
     }
 
 // =============================================================
