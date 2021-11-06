@@ -170,7 +170,7 @@ public class shitheadMain extends ApplicationAdapter {
 	// move card and play if card.y >= y_resolution/3
 	// TODO: add a algorithm to set the card back to its place if not played
 	public void cardIsDragged(Cards card, float x, float y){
-		card.getRectangle().x = x - 165 / 2;
+		// card.getRectangle().x = x - 165 / 2;
 		card.getRectangle().y = y - 242 / 2;
 		if(card.getRectangle().y >= y_resolution/3) {
 			// TODO: card only can be played if card > discard pile
