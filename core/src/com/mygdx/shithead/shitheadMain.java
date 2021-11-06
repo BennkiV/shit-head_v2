@@ -3,13 +3,10 @@ package com.mygdx.shithead;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.ArrayList;
 
 public class shitheadMain extends ApplicationAdapter {
 	// Display resolution
@@ -23,8 +20,6 @@ public class shitheadMain extends ApplicationAdapter {
 	private Deck discardPile;
 
 	// Draw elements
-	private Rectangle discardPileRect;
-	private Texture discardPileTex;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 
@@ -79,7 +74,6 @@ public class shitheadMain extends ApplicationAdapter {
 
 
 		// testcard image
-		discardPileTex = new Texture(Gdx.files.internal("DiscardPile.png"));
 		//		discardPileTexture = new Texture(Gdx.files.internal("DiscardPile.png"));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
@@ -94,8 +88,7 @@ public class shitheadMain extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		boolean start = true;
-		ScreenUtils.clear(0, 0, 0.2f, 1);
+		ScreenUtils.clear(0, 0, 0.2f, 1);	// can be set by COLOR.'color'
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -103,18 +96,22 @@ public class shitheadMain extends ApplicationAdapter {
 		// draw cards
 		batch.draw(discardPile.getDeckTexture(), discardPile.getRectangle().x, discardPile.getRectangle().y);
 		batch.draw(deck.getDeckTexture(), 40, y_resolution/2);
-		if(start) {
-			for (Cards card : p1.downBoardCards) {
-				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-			}
-			for (Cards card : p1.upBoardCards) {
-				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-			}
-			for (Cards card : p1.HandCards) {
-				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-			}
-			start = false;
+
+		if(deck.card.size() == 0)
+			deck.editTexture("DiscardPile.png");
+
+		for (Cards card : p1.downBoardCards) {
+			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
+		for (Cards card : p1.upBoardCards) {
+			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+		}
+		for (Cards card : p1.HandCards) {
+				batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
+		}
+
+
+
 		batch.end();
 
 		batch.begin();
@@ -131,7 +128,6 @@ public class shitheadMain extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		discardPileTex.dispose();
 	}
 
 	//____________________________________________________________
@@ -149,7 +145,7 @@ public class shitheadMain extends ApplicationAdapter {
 				for (Cards card : p1.HandCards) {
 					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
 						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-						cardIsDragged(card, touchPos.x, touchPos.y);
+						cardIsDragged(card, touchPos.x, touchPos.y, card.getRectangle().getY());
 						break;	// brake if card is touched or played
 					}
 				}
@@ -158,7 +154,7 @@ public class shitheadMain extends ApplicationAdapter {
 				for (Cards card : p1.upBoardCards) {
 					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
 						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-						cardIsDragged(card, touchPos.x, touchPos.y);
+						cardIsDragged(card, touchPos.x, touchPos.y, card.getRectangle().getY());
 						break;
 					}
 				}
@@ -166,7 +162,7 @@ public class shitheadMain extends ApplicationAdapter {
 			if(p1.downBoardCards.size() != 0) {
 				for (Cards card : p1.downBoardCards) {
 					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
-						cardIsDragged(card, touchPos.x, touchPos.y);
+						cardIsDragged(card, touchPos.x, touchPos.y, card.getRectangle().getY());
 						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 						break;
 					}
@@ -179,13 +175,31 @@ public class shitheadMain extends ApplicationAdapter {
 		}
 	}
 	// move card and play if card.y >= y_resolution/3
-	public void cardIsDragged(Cards card, float x, float y){
+	public void cardIsDragged(Cards card, float x, float y, float y_old){
 		// card.getRectangle().x = x - 165 / 2;
 		card.getRectangle().y = y - 242 / 2;
 		if(card.getRectangle().y >= y_resolution/3) {
 			// TODO: card only can be played if card > discard pile
-			p1.playCards(deck, discardPile, card);
+			// check if card can be played
+			if(checkPlay(card, discardPile)){
+				p1.playCards(deck, discardPile, card);
+			}
+
 			p1.sortHandCards(x_resolution);
 		}
 	}
+
+	// TODO: check for special cards and Ace
+	public boolean checkPlay(Cards card, Deck discardPile){
+		if(discardPile.card.size() > 0){
+			if(card.getValue() >= discardPile.card.get(discardPile.card.size()-1).getValue())
+				return true;
+			else
+				return false;
+		}else if(discardPile.card.size() == 0)
+			return true;
+
+		return false;
+	}
+
 }

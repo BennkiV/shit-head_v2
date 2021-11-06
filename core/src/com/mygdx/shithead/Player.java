@@ -24,22 +24,18 @@ public class Player {
         // get cards if less than 3
         if(HandCards.size() != 0 && deck.card.size() != 0) {
             while (HandCards.size() <= 3) {
-                Cards takeCard = deck.getCard();
-                // sets card to location next to the last card
-                takeCard.editRectangle(HandCards.get(HandCards.size() - 1).getRectangle().x + 82.5f /*170 old*/,
-                        HandCards.get(HandCards.size() - 1).getRectangle().y);
-                HandCards.add(takeCard);
+                HandCards.add(deck.getCard());
             }
             HandCards.remove(card);
+            discardPile.discard(card);
         }else if(upBoardCards.size() != 0){
             upBoardCards.remove(card);
+            discardPile.discard(card);
         }else if(downBoardCards.size() != 0){
             card.restoreTexture();
             downBoardCards.remove(card);
+            discardPile.discard(card);
         }
-
-        discardPile.discard(card);
-
         return true;
     }
 
@@ -49,6 +45,12 @@ public class Player {
         if(discardPile != null && discardPile.card.size() > 0) {
             for(Cards card : discardPile.card){
                 HandCards.add(card);
+            }
+            while(discardPile.card.size() > 0){
+                for(Cards card : discardPile.card){
+                    discardPile.card.remove(card);
+                    break;
+                }
             }
         }
         discardPile.editTexture("DiscardPile.png");
@@ -112,13 +114,12 @@ public class Player {
         for(Cards card : HandCards){
             card.editRectangle(counter, y);
             // if card is out of bounds reset to card0 and +1
-            if(card.getRectangle().x + card.getRectangle().width + 680 >= x_resolution){
-                counter = 590;
-                y = 60;
+            if(card.getRectangle().x + card.getRectangle().width >= x_resolution){
+                counter = 610;
+                y += 60;
             }
             counter += 90;
         }
-
     }
 
     public void sortList(ArrayList<Cards> list){

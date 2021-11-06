@@ -82,6 +82,12 @@ public class Cards {
             }
         }
 
+        // return the ability as a short for 'game'
+        public short getAbility(){
+
+            return 1;
+        }
+
         //  Print
         public void printCards(){
             System.out.printf("%s, %d\n", kind, value);

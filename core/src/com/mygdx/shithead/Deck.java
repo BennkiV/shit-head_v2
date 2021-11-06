@@ -134,23 +134,6 @@ public class Deck {
         return deckTexture;
     }
 
-    // get ability          // ??? need to be implemented in Cards !!
-/*    public void getAbility(Cards _card){
-        if(_card.getKind() != 'J'){
-            switch(_card.getValue()){
-                 case(2): :break;
-                case(3): :break;
-                case(7): :break;
-                case(8): :break;
-                case(10): :break;
-            }
-        }else{
-            // wish
-
-        }
-    }
-*/
-
     // print the deck
     public void printDeck(){
         for (Cards cards : card) System.out.println(cards.getKind() + " , " + cards.getValue() + " , " + cards.getImageDirect());
