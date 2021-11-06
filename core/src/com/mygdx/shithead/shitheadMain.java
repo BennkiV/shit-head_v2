@@ -66,6 +66,8 @@ public class shitheadMain extends ApplicationAdapter {
 			card.editRectangle(counter, 0);
 			counter +=  82.5f; // 170;
 		}
+
+		p1.sortHandCards();
 			// Cards of Game
 		// Take Card Button // maybe not relevant
 		// ...
@@ -110,11 +112,11 @@ public class shitheadMain extends ApplicationAdapter {
 		}
 		batch.end();
 
-
 		batch.begin();
 		// detect if card is touched
 		// cardIsDragged(): drag card and if card.y over y_resolution play
 		cardIsTouched();
+
 
 		batch.end();
 	}
@@ -130,6 +132,7 @@ public class shitheadMain extends ApplicationAdapter {
 	//____________________________________________________________
 	// EXTRA FUNCTIONS ===========================================
 
+	// if card is touched: check if card is played by drag-Function
 	public void cardIsTouched(){
 		if(Gdx.input.isTouched()){
 			Vector3 touchPos = new Vector3();
@@ -166,16 +169,14 @@ public class shitheadMain extends ApplicationAdapter {
 			}
 		}
 	}
-
 	// move card and play if card.y >= y_resolution/3
-	// TODO: add a algorithm to set the card back to its place if not played
 	public void cardIsDragged(Cards card, float x, float y){
 		// card.getRectangle().x = x - 165 / 2;
 		card.getRectangle().y = y - 242 / 2;
 		if(card.getRectangle().y >= y_resolution/3) {
 			// TODO: card only can be played if card > discard pile
 			p1.playCards(deck, discardPile, card);
-			System.out.println(card.getKind() + " , " + card.getValue());
+			p1.sortHandCards();
 		}
 	}
 }

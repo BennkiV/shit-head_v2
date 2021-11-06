@@ -1,30 +1,15 @@
 package com.mygdx.shithead;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Player {
     ArrayList<Cards> HandCards = new ArrayList<>();
     ArrayList<Cards> upBoardCards = new ArrayList<>();    // split in 2 for face-up and -down cards
     ArrayList<Cards> downBoardCards = new ArrayList<>();
 
-    // give the player a start hand from deck
-    public void setStartHand(Deck deck){
-        for(int i=0; i<3; i++) {
-            Cards setCards = deck.getCard();
-            HandCards.add(setCards);
-        }
-    }
-
-    // set the board cards from deck
-    public void setBoardCards(Deck deck){
-        for(int i=0; i<3; i++){
-            upBoardCards.add(deck.getCard());
-            downBoardCards.add(deck.getCard());
-        }
-    }
-
+    // set the start cards of player
     public void setCards(Deck deck){
         for(int i=0; i<3; i++) {
             Cards setCards = deck.getCard();
@@ -65,51 +50,101 @@ public class Player {
         }
     }
 
-    // function will be replaced with dragging the card on the discard pile
-    public Cards choose(int err){
-        if(err == 1) System.out.println("Error try again");
-        Cards ChooseCard = new Cards();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the value");
-        ChooseCard.setKind(scanner.next());
-        System.out.println("Enter the kind of card");
-        ChooseCard.setValue(scanner.nextInt());
+// =============================================================
+// START SORT TEST
+
+    // TODO: need overwork, is to complicated and don't do it correct
+    // sort hand cards for better overview
+    public void sortHandCards(){
+
+        ArrayList<Cards> TempHeart = new ArrayList<>();
+        ArrayList<Cards> TempSpades = new ArrayList<>();
+        ArrayList<Cards> TempCross = new ArrayList<>();
+        ArrayList<Cards> TempDiamond = new ArrayList<>();
+        ArrayList<Cards> TempJoker = new ArrayList<>();
+
+        for(int i=0; i<HandCards.size(); i++){
+            switch(HandCards.get(i).getKind()){
+                case("Cross"):
+                    TempCross.add(HandCards.get(i));
+                    break;
+                case("Heart"):
+                    TempHeart.add(HandCards.get(i));
+                    break;
+                case("Spades"):
+                    TempSpades.add(HandCards.get(i));
+                    break;
+                case("Diamond"):
+                    TempDiamond.add(HandCards.get(i));
+                    break;
+                default:
+                    TempJoker.add(HandCards.get(i));
+                    break;
+            }
+        }
 
 
-        if(HandCards.size() != 0){
-            for(Cards cards : HandCards) {
-                if (cards.equals(ChooseCard))        // need test
-                    return ChooseCard;
+
+        printList(TempCross);
+        printList(TempDiamond);
+        printList(TempSpades);
+        printList(TempHeart);
+        printList(TempJoker);
+
+        sortList(TempCross);
+        sortList((TempDiamond));
+        sortList(TempHeart);
+        sortList(TempSpades);
+        sortList(TempJoker);
+
+        while(HandCards.size() > 0){
+            for (Cards card : HandCards){
+                HandCards.remove(card);
+                break;
             }
-            ChooseCard = choose(1);
         }
-        else
-        if(upBoardCards.size() != 0){
-            for (Cards cards: upBoardCards){
-                if(cards.equals(ChooseCard))
-                    return ChooseCard;
-            }
-            ChooseCard = choose(1);
+
+        mergeList(TempCross);
+        mergeList(TempDiamond);
+        mergeList(TempHeart);
+        mergeList(TempSpades);
+        mergeList(TempJoker);
+
+        int counter = 680;
+        for(Cards card : HandCards){
+            card.editRectangle(counter, 0);
+            counter += 90;
         }
-        else
-        if(downBoardCards.size() != 0){
-            for (Cards cards: downBoardCards){
-                if(cards.equals(ChooseCard))
-                    return ChooseCard;
-            }
-            ChooseCard = choose(1);
-        }
-        return ChooseCard;
+
     }
 
-    // returns a random card from player
-    public Cards chooseTest(){
-        Random rand = new Random();
-        int indra = rand.nextInt(HandCards.size());
-        Cards playCard = HandCards.get(indra);
-        HandCards.remove(indra);
-        return playCard;
+    public void sortList(ArrayList<Cards> list){
+        for(int i=0; i<list.size()-1; i++){
+            Cards next = list.get(i+1);     // get next element
+            if(list.get(i).getValue() > next.getValue() && next != null){
+                list.set(i+1, list.get(i));
+                list.set(i, next);
+                i=0;
+            }
+        }
     }
+
+    public void mergeList(ArrayList<Cards> list){
+        for(Cards card : list){
+            HandCards.add(card);
+        }
+    }
+
+    public void printList(ArrayList<Cards> list){
+        if(list.size() > 0) {
+            for (Cards c : list) {
+                System.out.println(c.getKind() + " , " + c.getValue());
+            }
+        }
+    }
+
+// END SORT
+//=====================================================================
 
     public void printStartHand(){
         for (Cards handCard : HandCards) System.out.println(handCard.getKind() + " , " + handCard.getValue());
