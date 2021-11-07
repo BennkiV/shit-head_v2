@@ -5,14 +5,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Cards {
+
+        public enum Ability{
+            STARTER, NORMAL, ALWAYS, REVERSE, UNDER, PASS, END, ACE, JOKER, ERROR
+        }
         protected String kind;
         protected int value;
+        protected Ability ability;
         protected String imageDirect;
         protected Texture cardTexture;
-        // Test!!!
         protected Rectangle rectangle;
-        // ENDE
 
+        //_______________________________________________
         //  Set
         public void setValue(int _value){
             value = _value;
@@ -39,7 +43,11 @@ public class Cards {
             rectangle.height = 242;
         }
 
+        public void setAbility(Ability _ability){
+            ability = _ability;
+        }
 
+        //________________________________________________
         // Get
         public int getValue(){
             return value;
@@ -61,6 +69,12 @@ public class Cards {
         return rectangle;
     }
 
+        // return the ability as a short for 'game'
+        public Ability getAbility(){
+            return ability ;
+        }
+
+        //__________________________________________________
         // Other
         public void editRectangle(float _x, float _y){
             rectangle.x = _x;
@@ -80,12 +94,6 @@ public class Cards {
                 case(13):   cardTexture = new Texture(Gdx.files.internal(kind+"_K.png")); break;
                 default: cardTexture = new Texture(Gdx.files.internal(kind+"_"+value+".png"));
             }
-        }
-
-        // return the ability as a short for 'game'
-        public short getAbility(){
-
-            return 1;
         }
 
         //  Print

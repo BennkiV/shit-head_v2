@@ -22,8 +22,8 @@ public class Player {
     // play card, when player has less than 3 hand cards add
     public boolean playCards(Deck deck, Deck discardPile, Cards card){
         // get cards if less than 3
-        if(HandCards.size() != 0 && deck.card.size() != 0) {
-            while (HandCards.size() <= 3) {
+        if(HandCards.size() != 0) {
+            while (HandCards.size() <= 3 && deck.card.size() != 0) {
                 HandCards.add(deck.getCard());
             }
             HandCards.remove(card);

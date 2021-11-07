@@ -27,9 +27,19 @@ public class Deck {
                         switch (j){
                             case(1):    setCard.setImageDirect("Heart_A.png"); break;
                             case(11):   setCard.setImageDirect("Heart_J.png"); break;
-                            case(12):   setCard.setImageDirect("Heart_Q.png"); break;
+                            case(12):   setCard.setImageDirect("Heart_Q.png");break;
                             case(13):   setCard.setImageDirect("Heart_K.png"); break;
                             default:    setCard.setImageDirect("Heart_"+ j +".png");
+                        }
+                        switch(j){
+                            case 1:     setCard.setAbility(Cards.Ability.ACE); break;
+                            case 2:     setCard.setAbility(Cards.Ability.ALWAYS); break;
+                            case 3:     setCard.setAbility(Cards.Ability.REVERSE); break;
+                            case 4:     setCard.setAbility(Cards.Ability.STARTER); break;
+                            case 7:     setCard.setAbility(Cards.Ability.UNDER); break;
+                            case 8:     setCard.setAbility(Cards.Ability.PASS); break;
+                            case 10:    setCard.setAbility(Cards.Ability.END); break;
+                            default:    setCard.setAbility(Cards.Ability.NORMAL);
                         }
                         card.add(setCard);
                     break;
@@ -45,6 +55,16 @@ public class Deck {
                             case(13):   setCard.setImageDirect("Spades_K.png"); break;
                             default:    setCard.setImageDirect("Spades_"+j+".png");
                         }
+                        switch(j){
+                            case 1:     setCard.setAbility(Cards.Ability.ACE); break;
+                            case 2:     setCard.setAbility(Cards.Ability.ALWAYS); break;
+                            case 3:     setCard.setAbility(Cards.Ability.REVERSE); break;
+                            case 4:     setCard.setAbility(Cards.Ability.STARTER); break;
+                            case 7:     setCard.setAbility(Cards.Ability.UNDER); break;
+                            case 8:     setCard.setAbility(Cards.Ability.PASS); break;
+                            case 10:    setCard.setAbility(Cards.Ability.END); break;
+                            default:    setCard.setAbility(Cards.Ability.NORMAL);
+                        }
                         card.add(setCard);
                     break;
                     case (2):
@@ -58,6 +78,16 @@ public class Deck {
                             case(12):   setCard.setImageDirect("Diamond_Q.png"); break;
                             case(13):   setCard.setImageDirect("Diamond_K.png"); break;
                             default:    setCard.setImageDirect("Diamond_"+j+".png");
+                        }
+                        switch(j){
+                            case 1:     setCard.setAbility(Cards.Ability.ACE); break;
+                            case 2:     setCard.setAbility(Cards.Ability.ALWAYS); break;
+                            case 3:     setCard.setAbility(Cards.Ability.REVERSE); break;
+                            case 4:     setCard.setAbility(Cards.Ability.STARTER); break;
+                            case 7:     setCard.setAbility(Cards.Ability.UNDER); break;
+                            case 8:     setCard.setAbility(Cards.Ability.PASS); break;
+                            case 10:    setCard.setAbility(Cards.Ability.END); break;
+                            default:    setCard.setAbility(Cards.Ability.NORMAL);
                         }
                         card.add(setCard);
                     break;
@@ -73,6 +103,16 @@ public class Deck {
                             case(13):   setCard.setImageDirect("Cross_K.png"); break;
                             default:    setCard.setImageDirect("Cross_"+j+".png");
                         }
+                        switch(j){
+                            case 1:     setCard.setAbility(Cards.Ability.ACE); break;
+                            case 2:     setCard.setAbility(Cards.Ability.ALWAYS); break;
+                            case 3:     setCard.setAbility(Cards.Ability.REVERSE); break;
+                            case 4:     setCard.setAbility(Cards.Ability.STARTER); break;
+                            case 7:     setCard.setAbility(Cards.Ability.UNDER); break;
+                            case 8:     setCard.setAbility(Cards.Ability.PASS); break;
+                            case 10:    setCard.setAbility(Cards.Ability.END); break;
+                            default:    setCard.setAbility(Cards.Ability.NORMAL);
+                        }
                         card.add(setCard);
                     break;
                 }
@@ -85,6 +125,7 @@ public class Deck {
             setCard.setKind("Joker");
             setCard.setValue(i);
             setCard.setRectangle();
+            setCard.setAbility(Cards.Ability.JOKER);
             setCard.setImageDirect("Joker_"+i+".png");
             card.add(setCard);
         }
@@ -94,6 +135,18 @@ public class Deck {
     public void discard(Cards discardCard){
         card.add(discardCard);
         deckTexture = discardCard.getCardTexture();
+    }
+
+    // drop deck
+    public void dropDeck(){
+        while(card.size() != 0){
+            for (Cards cards : card){
+                card.remove(cards);
+                printDeck();
+                break;
+            }
+        }
+        editTexture("DiscardPile.png");
     }
 
     // returns a random card and "delete" it in the deck
@@ -106,6 +159,7 @@ public class Deck {
         randCard.setValue(card.get(CardIndex).getValue());
         randCard.setImageDirect(card.get(CardIndex).getImageDirect());
         randCard.setRectangle(card.get(CardIndex).getRectangle());
+        randCard.setAbility(card.get(CardIndex).getAbility());
         card.remove(CardIndex);
 
         return randCard;
@@ -136,6 +190,6 @@ public class Deck {
 
     // print the deck
     public void printDeck(){
-        for (Cards cards : card) System.out.println(cards.getKind() + " , " + cards.getValue() + " , " + cards.getImageDirect());
+        for (Cards cards : card) System.out.println(cards.getKind() + " ,\t " + cards.getValue() + " ,\t " + cards.getImageDirect());
     }
 }
