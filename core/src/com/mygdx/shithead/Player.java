@@ -1,8 +1,6 @@
 package com.mygdx.shithead;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Player {
     ArrayList<Cards> HandCards = new ArrayList<>();
@@ -43,9 +41,7 @@ public class Player {
     // TODO: bug!!!!!!!
     public void takeDiscardPile(Deck discardPile){
         if(discardPile != null && discardPile.card.size() > 0) {
-            for(Cards card : discardPile.card){
-                HandCards.add(card);
-            }
+            HandCards.addAll(discardPile.card);
             while(discardPile.card.size() > 0){
                 for(Cards card : discardPile.card){
                     discardPile.card.remove(card);
@@ -125,7 +121,7 @@ public class Player {
     public void sortList(ArrayList<Cards> list){
         for(int i=0; i<list.size()-1; i++){
             Cards next = list.get(i+1);     // get next element
-            if(list.get(i).getValue() > next.getValue() && next != null){
+            if(list.get(i).getValue() > next.getValue()){
                 list.set(i+1, list.get(i));
                 list.set(i, next);
                 i=0;
@@ -134,9 +130,7 @@ public class Player {
     }
 
     public void mergeList(ArrayList<Cards> list){
-        for(Cards card : list){
-            HandCards.add(card);
-        }
+        HandCards.addAll(list);
     }
 
 

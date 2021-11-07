@@ -23,8 +23,6 @@ public class shitheadMain extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 
-	private CardCollisionDetection CCD;
-
 	@Override
 	public void create() {
 		// Setup camera to render game
@@ -77,11 +75,6 @@ public class shitheadMain extends ApplicationAdapter {
 		//		discardPileTexture = new Texture(Gdx.files.internal("DiscardPile.png"));
 		// sound = Gdx.audio.newSound(...);	// implement sound
 		// music = Gdx.audio.newMusic(...); // implement music
-
-
-		//// TEST
-		CCD = new CardCollisionDetection();
-		Gdx.input.setInputProcessor(CCD);
 
 	}
 
@@ -234,7 +227,7 @@ public class shitheadMain extends ApplicationAdapter {
 				default: if (card.getValue() >= value.getValue() && !value.getAbility().equals(Cards.Ability.ACE))
 								return Cards.Ability.NORMAL;
 			}
-		} else if (discardPile.card.size() == 0) {
+		} else {
 			switch (card.getAbility()) {
 				case ACE: 		return Cards.Ability.ACE;
 				case ALWAYS: 	return Cards.Ability.ALWAYS;
