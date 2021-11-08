@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.ArrayList;
+
 
 public class shitheadMain extends ApplicationAdapter {
 	// Display resolution
@@ -38,9 +40,11 @@ public class shitheadMain extends ApplicationAdapter {
 		deck.editTexture("CardBack.png");
 		deck.fillDeck();
 
+		// set player cards
 		p1 = new Player();
 		p1.setCards(deck);
 		p1.printStartHand();
+
 
 		// Rectangle Cards
 		// Cards of Player
@@ -108,8 +112,8 @@ public class shitheadMain extends ApplicationAdapter {
 		batch.begin();
 		// detect if card is touched
 		// cardIsDragged(): drag card and if card.y over y_resolution play
-		cardIsTouched();
 
+		cardIsTouched();
 
 		batch.end();
 	}
@@ -171,6 +175,9 @@ public class shitheadMain extends ApplicationAdapter {
 			if (card.getRectangle().y + card.getRectangle().getHeight() >= discardPile.getRectangle().y - 20/*y_resolution / 3*/) {
 				// use the ability in game
 				switch (checkPlay(card, discardPile)) {
+					case REVERSE:
+						p1.playCards(deck, discardPile, card);
+						break;
 					case END:
 						p1.playCards(deck, discardPile, card);
 						discardPile.dropDeck();
@@ -187,6 +194,9 @@ public class shitheadMain extends ApplicationAdapter {
 		}else {
 			if (card.getRectangle().y + card.getRectangle().getHeight() >= discardPile.getRectangle().y - 20/*y_resolution / 3*/) {
 				switch (checkPlay(card, discardPile)) {
+					case REVERSE:
+						p1.playCards(deck, discardPile, card);
+						break;
 					case END:
 						p1.playCards(deck, discardPile, card);
 						discardPile.dropDeck();
@@ -217,7 +227,10 @@ public class shitheadMain extends ApplicationAdapter {
 				case ACE: if (value.getValue() <= 13 && value.getValue() != 7)
 								return Cards.Ability.ACE;
 				case ALWAYS: 	return Cards.Ability.ALWAYS;
-				case REVERSE: 	return Cards.Ability.REVERSE;
+				case REVERSE:
+					if(card.getValue() >= value.getValue() && !value.getAbility().equals(Cards.Ability.ACE))
+						return Cards.Ability.REVERSE;
+					return Cards.Ability.ERROR;
 				case UNDER: 	return Cards.Ability.UNDER;
 				case END: 		return Cards.Ability.END;
 				case JOKER: 	return Cards.Ability.JOKER;
