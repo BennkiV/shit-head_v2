@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+//TODO General: More Parameters for debugging (or own Main Class as debug)
 
 public class shitheadMain extends ApplicationAdapter {
 	// Display resolution
@@ -59,6 +60,7 @@ public class shitheadMain extends ApplicationAdapter {
 			counter += 170;
 		}
 		counter += 170;
+		//TODO Bug: A Card between two cards is hard to grab
 		for (Cards card : p1.HandCards) {
 			card.editRectangle(counter, 0);
 			counter += 82.5f; // 170;
@@ -95,6 +97,7 @@ public class shitheadMain extends ApplicationAdapter {
 		if (deck.cards.size() == 0)
 			deck.editTexture("DiscardPile.png");
 
+		//TODO Rework this! If networking is implemented then it shouldn't just call p1
 		for (Cards card : p1.downBoardCards) {
 			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
@@ -222,6 +225,7 @@ public class shitheadMain extends ApplicationAdapter {
 			value = discardPile.cards.get(discardPile.cards.size()-1);
 			System.out.println(value.getKind() + " , " + value.getValue());
 
+			//TODO REVERSE doesn't work (It's not always legal to use as it should)
 			switch (card.getAbility()) {
 				case ACE: if (value.getValue() <= 13 && value.getValue() != 7)
 								return Cards.Ability.ACE;
