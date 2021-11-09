@@ -7,10 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.ArrayList;
-
-import sun.jvm.hotspot.gc.z.ZAddressRangeMapForPageTable;
-
 
 public class shitheadMain extends ApplicationAdapter {
 	// Display resolution
@@ -95,7 +91,7 @@ public class shitheadMain extends ApplicationAdapter {
 		batch.draw(discardPile.getDeckTexture(), discardPile.getRectangle().x, discardPile.getRectangle().y);
 		batch.draw(deck.getDeckTexture(), 40, y_resolution / 2);
 
-		if (deck.card.size() == 0)
+		if (deck.cards.size() == 0)
 			deck.editTexture("DiscardPile.png");
 
 		for (Cards card : p1.downBoardCards) {
@@ -220,9 +216,9 @@ public class shitheadMain extends ApplicationAdapter {
 	// Checks for special cards and if they are allowed to play
 	public Cards.Ability checkPlay(Cards card, Deck discardPile) {
 		Cards value;
-		if (discardPile.card.size() > 0) {
+		if (discardPile.cards.size() > 0) {
 			// get special ability's and if cards are allowed to be played
-			value = discardPile.card.get(discardPile.card.size()-1);
+			value = discardPile.cards.get(discardPile.cards.size()-1);
 			System.out.println(value.getKind() + " , " + value.getValue());
 
 			switch (card.getAbility()) {

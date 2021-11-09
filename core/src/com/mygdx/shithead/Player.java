@@ -10,10 +10,10 @@ public class Player {
     // set the start cards of player
     public void setCards(Deck deck){
         for(int i=0; i<3; i++) {
-            Cards setCards = deck.getCard();
+            Cards setCards = deck.getCards();
             HandCards.add(setCards);
-            upBoardCards.add(deck.getCard());
-            downBoardCards.add(deck.getCard());
+            upBoardCards.add(deck.getCards());
+            downBoardCards.add(deck.getCards());
         }
     }
 
@@ -21,8 +21,8 @@ public class Player {
     public boolean playCards(Deck deck, Deck discardPile, Cards card){
         // get cards if less than 3
         if(HandCards.size() != 0) {
-            while (HandCards.size() <= 3 && deck.card.size() != 0) {
-                HandCards.add(deck.getCard());
+            while (HandCards.size() <= 3 && deck.cards.size() != 0) {
+                HandCards.add(deck.getCards());
             }
             HandCards.remove(card);
             discardPile.discard(card);
@@ -39,11 +39,11 @@ public class Player {
 
     // if player can't play
     public void takeDiscardPile(Deck discardPile){
-        if(discardPile != null && discardPile.card.size() > 0) {
-            HandCards.addAll(discardPile.card);
-            while(discardPile.card.size() > 0){
-                for(Cards card : discardPile.card){
-                    discardPile.card.remove(card);
+        if(discardPile != null && discardPile.cards.size() > 0) {
+            HandCards.addAll(discardPile.cards);
+            while(discardPile.cards.size() > 0){
+                for(Cards card : discardPile.cards){
+                    discardPile.cards.remove(card);
                     break;
                 }
             }
