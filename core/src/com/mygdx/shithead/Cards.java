@@ -26,6 +26,7 @@ public class Cards {
 
             cardTexture = new Texture(Gdx.files.internal(getTextureName()));
             backTexture = new Texture(Gdx.files.internal("CardBack.png"));
+            imageDirect = getTextureName();
 
             rectangle = new Rectangle();
             rectangle.x = 0;
@@ -84,8 +85,9 @@ public class Cards {
                     return Ability.PASS;
                 case 10:
                     return Ability.END;
+                default:
+                    return Ability.NORMAL;
             }
-            return null;
         }
 
         public String getTextureName() {
@@ -114,7 +116,7 @@ public class Cards {
 
             String path = color+"_"+val+".png";
 
-            return null;
+            return path;
         }
 
         public int getValue(){
