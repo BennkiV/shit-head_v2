@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Deck {
@@ -201,5 +202,10 @@ public class Deck {
     // print the deck
     public void printDeck(){
         for (Cards cards : cards) System.out.println(cards.getKind() + " ,\t " + cards.getValue() + " ,\t " + cards.getImageDirect());
+    }
+
+    //Randomizes order of the cards of the deck
+    public void shuffleDeck() {
+        Collections.shuffle(cards);
     }
 }

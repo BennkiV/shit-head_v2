@@ -37,6 +37,7 @@ public class shitheadMain extends ApplicationAdapter {
 		deck = new Deck();
 		deck.editTexture("CardBack.png");
 		deck.fillDeck();
+		deck.shuffleDeck();
 
 		// set player cards
 		p1 = new Player();
