@@ -18,7 +18,7 @@ public class Player {
     }
 
     // play card, when player has less than 3 hand cards add
-    public boolean playCards(Deck deck, Deck discardPile, Cards card){
+    public void playCards(Deck deck, Deck discardPile, Cards card){
         // get cards if less than 3
         if(HandCards.size() != 0) {
             while (HandCards.size() <= 3 && deck.cards.size() != 0) {
@@ -34,7 +34,6 @@ public class Player {
             downBoardCards.remove(card);
             discardPile.discard(card);
         }
-        return true;
     }
 
     // if player can't play
@@ -48,6 +47,7 @@ public class Player {
                 }
             }
         }
+        assert discardPile != null;
         discardPile.editTexture("DiscardPile.png");
     }
 

@@ -114,9 +114,7 @@ public class Cards {
 
             }
 
-            String path = color+"_"+val+".png";
-
-            return path;
+            return color+"_"+val+".png";
         }
 
         public int getValue(){
