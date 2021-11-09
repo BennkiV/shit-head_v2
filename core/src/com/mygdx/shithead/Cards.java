@@ -14,7 +14,26 @@ public class Cards {
         protected Ability ability;
         protected String imageDirect;
         protected Texture cardTexture;
+        protected Texture backTexture;
         protected Rectangle rectangle;
+
+        Cards() {
+
+        }
+
+        Cards(String kind, int value) {
+            this.kind = kind;
+            this.value = value;
+
+            cardTexture = new Texture(Gdx.files.internal(getTextureName()));
+
+            rectangle = new Rectangle();
+            rectangle.x = 0;
+            rectangle.y = 0;
+            rectangle.width = 165;
+            rectangle.height = 242;
+
+        }
 
         //_______________________________________________
         //  Set
@@ -49,6 +68,35 @@ public class Cards {
 
         //________________________________________________
         // Get
+        public String getTextureName() {
+            String color = this.kind;
+            int value = this.value;
+            String val;
+
+            switch (value) {
+                case 1:
+                    val = "A";
+                    break;
+                case 11:
+                    val = "J";
+                    break;
+                case 12:
+                    val = "Q";
+                    break;
+                case 13:
+                    val = "K";
+                    break;
+                default:
+                    val = Integer.toString(value);
+                    break;
+
+            }
+
+            String path = color+"_"+val+".png";
+
+            return null;
+        }
+
         public int getValue(){
             return value;
         }
