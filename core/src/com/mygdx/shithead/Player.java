@@ -54,7 +54,6 @@ public class Player {
 // =============================================================
 // START SORT TEST
 
-    // TODO: need overwork, is to complicated
     // sort hand cards for better overview
     public void sortHandCards(float x_resolution){
 
