@@ -38,7 +38,6 @@ public class Player {
     }
 
     // if player can't play
-    // TODO: bug!!!!!!!
     public void takeDiscardPile(Deck discardPile){
         if(discardPile != null && discardPile.card.size() > 0) {
             HandCards.addAll(discardPile.card);
