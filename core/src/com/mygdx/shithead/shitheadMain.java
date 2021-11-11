@@ -225,16 +225,13 @@ public class shitheadMain extends ApplicationAdapter {
 			value = discardPile.cards.get(discardPile.cards.size()-1);
 			System.out.println(value.getKind() + " , " + value.getValue());
 
-			//TODO REVERSE doesn't work (It's not always legal to use as it should)
 			switch (card.getAbility()) {
 				case ACE: if (value.getValue() <= 13 && value.getValue() != 7)
 								return Cards.Ability.ACE;
 				case ALWAYS: 	return Cards.Ability.ALWAYS;
-				case REVERSE:
-					if(card.getValue() >= value.getValue() && !value.getAbility().equals(Cards.Ability.ACE))
-						return Cards.Ability.REVERSE;
-					return Cards.Ability.ERROR;
-				case UNDER: 	return Cards.Ability.UNDER;
+				case REVERSE:  	return Cards.Ability.REVERSE;
+				case UNDER: 	if(card.getValue() >= value.getValue() && !value.getAbility().equals(Cards.Ability.ACE))
+										return Cards.Ability.UNDER;
 				case END: 		return Cards.Ability.END;
 				case JOKER: 	return Cards.Ability.JOKER;
 				case STARTER: if (card.getValue() >= value.getValue() && !value.getAbility().equals(Cards.Ability.ACE))
