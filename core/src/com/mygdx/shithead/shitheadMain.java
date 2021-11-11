@@ -141,7 +141,7 @@ public class shitheadMain extends ApplicationAdapter {
 				for (Cards card : p1.HandCards) {
 					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
 						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-						cardIsDragged(card, touchPos.x, touchPos.y, card.getRectangle().getY(), false);
+						cardIsDragged(card, x_resolution, touchPos.y, card.getRectangle().getY(), false);
 						break;    // brake if card is touched or played
 					}
 				}
@@ -149,14 +149,14 @@ public class shitheadMain extends ApplicationAdapter {
 				for (Cards card : p1.upBoardCards) {
 					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
 						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
-						cardIsDragged(card, touchPos.x, touchPos.y, card.getRectangle().getY(), false);
+						cardIsDragged(card, x_resolution, touchPos.y, card.getRectangle().getY(), false);
 						break;
 					}
 				}
 			} else if (p1.downBoardCards.size() != 0) {
 				for (Cards card : p1.downBoardCards) {
 					if (card.getRectangle().contains(touchPos.x, touchPos.y)) {
-						cardIsDragged(card, touchPos.x, touchPos.y, card.getRectangle().getY(), true);
+						cardIsDragged(card, x_resolution, touchPos.y, card.getRectangle().getY(), true);
 						batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 						break;
 					}
@@ -174,7 +174,7 @@ public class shitheadMain extends ApplicationAdapter {
 		// card.getRectangle().x = x - 165 / 2;
 		card.getRectangle().y = y - 242 / 2;
 		if(!downCards) {
-			if (card.getRectangle().y + card.getRectangle().getHeight() >= discardPile.getRectangle().y - 20/*y_resolution / 3*/) {
+			if (card.getRectangle().y + card.getRectangle().getHeight() >= discardPile.getRectangle().y - 20) {
 				// use the ability in game
 				switch (checkPlay(card, discardPile)) {
 					case REVERSE:
@@ -194,7 +194,7 @@ public class shitheadMain extends ApplicationAdapter {
 					p1.sortHandCards(x_resolution);
 			}
 		}else {
-			if (card.getRectangle().y + card.getRectangle().getHeight() >= discardPile.getRectangle().y - 20/*y_resolution / 3*/) {
+			if (card.getRectangle().y + card.getRectangle().getHeight() >= discardPile.getRectangle().y - 20) {
 				switch (checkPlay(card, discardPile)) {
 					case REVERSE:
 						p1.playCards(deck, discardPile, card);
