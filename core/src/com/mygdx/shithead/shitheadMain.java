@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import java.util.ArrayList;
-
-import sun.jvm.hotspot.gc.z.ZAddressRangeMapForPageTable;
-
+//TODO General: More Parameters for debugging (or own Main Class as debug)
 
 public class shitheadMain extends ApplicationAdapter {
 	// Display resolution
@@ -41,6 +38,7 @@ public class shitheadMain extends ApplicationAdapter {
 		deck = new Deck();
 		deck.editTexture("CardBack.png");
 		deck.fillDeck();
+		deck.shuffleDeck();
 
 		// set player cards
 		p1 = new Player();
@@ -62,6 +60,7 @@ public class shitheadMain extends ApplicationAdapter {
 			counter += 170;
 		}
 		counter += 170;
+		//TODO Bug: A Card between two cards is hard to grab
 		for (Cards card : p1.HandCards) {
 			card.editRectangle(counter, 0);
 			counter += 82.5f; // 170;
@@ -95,9 +94,10 @@ public class shitheadMain extends ApplicationAdapter {
 		batch.draw(discardPile.getDeckTexture(), discardPile.getRectangle().x, discardPile.getRectangle().y);
 		batch.draw(deck.getDeckTexture(), 40, y_resolution / 2);
 
-		if (deck.card.size() == 0)
+		if (deck.cards.size() == 0)
 			deck.editTexture("DiscardPile.png");
 
+		//TODO Rework this! If networking is implemented then it shouldn't just call p1
 		for (Cards card : p1.downBoardCards) {
 			batch.draw(card.getCardTexture(), card.getRectangle().x, card.getRectangle().y);
 		}
@@ -220,11 +220,12 @@ public class shitheadMain extends ApplicationAdapter {
 	// Checks for special cards and if they are allowed to play
 	public Cards.Ability checkPlay(Cards card, Deck discardPile) {
 		Cards value;
-		if (discardPile.card.size() > 0) {
+		if (discardPile.cards.size() > 0) {
 			// get special ability's and if cards are allowed to be played
-			value = discardPile.card.get(discardPile.card.size()-1);
+			value = discardPile.cards.get(discardPile.cards.size()-1);
 			System.out.println(value.getKind() + " , " + value.getValue());
 
+			//TODO REVERSE doesn't work (It's not always legal to use as it should)
 			switch (card.getAbility()) {
 				case ACE: if (value.getValue() <= 13 && value.getValue() != 7)
 								return Cards.Ability.ACE;

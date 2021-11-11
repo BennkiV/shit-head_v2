@@ -14,7 +14,27 @@ public class Cards {
         protected Ability ability;
         protected String imageDirect;
         protected Texture cardTexture;
+        protected Texture backTexture;
         protected Rectangle rectangle;
+
+        Cards() {}
+
+        Cards(String kind, int value) {
+            this.kind = kind;
+            this.value = value;
+            this.ability = getAbilityByValue();
+
+            cardTexture = new Texture(Gdx.files.internal(getTextureName()));
+            backTexture = new Texture(Gdx.files.internal("CardBack.png"));
+            imageDirect = getTextureName();
+
+            rectangle = new Rectangle();
+            rectangle.x = 0;
+            rectangle.y = 0;
+            rectangle.width = 165;
+            rectangle.height = 242;
+
+        }
 
         //_______________________________________________
         //  Set
@@ -49,6 +69,54 @@ public class Cards {
 
         //________________________________________________
         // Get
+        public Ability getAbilityByValue() {
+            switch (this.value) {
+                case 1:
+                    return Ability.ACE;
+                case 2:
+                    return Ability.ALWAYS;
+                case 3:
+                    return Ability.REVERSE;
+                case 4:
+                    return Ability.STARTER;
+                case 7:
+                    return Ability.UNDER;
+                case 8:
+                    return Ability.PASS;
+                case 10:
+                    return Ability.END;
+                default:
+                    return Ability.NORMAL;
+            }
+        }
+
+        public String getTextureName() {
+            String color = this.kind;
+            int value = this.value;
+            String val;
+
+            switch (value) {
+                case 1:
+                    val = "A";
+                    break;
+                case 11:
+                    val = "J";
+                    break;
+                case 12:
+                    val = "Q";
+                    break;
+                case 13:
+                    val = "K";
+                    break;
+                default:
+                    val = Integer.toString(value);
+                    break;
+
+            }
+
+            return color+"_"+val+".png";
+        }
+
         public int getValue(){
             return value;
         }
@@ -98,6 +166,6 @@ public class Cards {
 
         //  Print
         public void printCards(){
-            System.out.printf("%s, %d\n", kind, value);
+            System.out.println(kind+", "+value);
         }
 }
