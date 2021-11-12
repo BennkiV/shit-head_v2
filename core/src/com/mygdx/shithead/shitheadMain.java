@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.ArrayList;
+
 //TODO General: More Parameters for debugging (or own Main Class as debug)
 
 public class shitheadMain extends ApplicationAdapter {
@@ -38,13 +40,15 @@ public class shitheadMain extends ApplicationAdapter {
 		deck = new Deck();
 		deck.editTexture("CardBack.png");
 		deck.fillDeck();
-		deck.shuffleDeck();
 
 		// set player cards
 		p1 = new Player();
 		p1.setCards(deck);
 		p1.printStartHand();
 
+		// PlayerList
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(p1);
 
 		// Rectangle Cards
 		// Cards of Player
