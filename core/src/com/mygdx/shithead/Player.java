@@ -2,6 +2,10 @@ package com.mygdx.shithead;
 
 import java.util.ArrayList;
 
+/**
+ * Class describes the Player.
+ * Contains his cards
+ */
 public class Player {
     ArrayList<Cards> HandCards = new ArrayList<>();
     ArrayList<Cards> upBoardCards = new ArrayList<>();    // split in 2 for face-up and -down cards

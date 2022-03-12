@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 
 //TODO General: More Parameters for debugging (or own Main Class as debug)
@@ -26,8 +27,19 @@ public class shitheadMain extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 
+	// Networking
+	private Net net;
+
 	@Override
 	public void create() {
+		// networking
+		net = new Net();
+		try {
+			net.whatIsPort();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+
 		// Setup camera to render game
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, x_resolution, y_resolution);

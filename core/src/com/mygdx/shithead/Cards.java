@@ -4,6 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+/**
+ * Card class contains card information.
+ * Kind = Symbol like heart
+ * Value = number of cared, like 8 of ace
+ * imageDirect = contains path to the card image
+ * cardTexture = png of the card (front)
+ * backTexture = png of the card (back)
+ * rectangle = rectangle describing the card mathematical
+ *
+ * Ability = special functionality in shithead
+ */
 public class Cards {
 
         public enum Ability{
@@ -17,9 +28,24 @@ public class Cards {
         protected Texture backTexture;
         protected Rectangle rectangle;
 
-        Cards() {}
+    /**
+     * Basic constructor.
+     */
+    Cards() {}
 
-        Cards(String kind, int value) {
+    /**
+     * Constructor to set a cared by the given kind and value.
+     * The kind decides if its a heart, ace, pic, spades.
+     * The value sets the value like 1,2,..., A.
+     * The card texture is selected out of the android -> assets
+     * folder by using the function getTextureName to select the
+     * correct name.
+     * Same for backTexture but the png name is predefined.
+     * Rectangle is defined and represents the size of the card.png.
+     * @param kind
+     * @param value
+     */
+    Cards(String kind, int value) {
             this.kind = kind;
             this.value = value;
             this.ability = getAbilityByValue();
@@ -38,24 +64,44 @@ public class Cards {
 
         //_______________________________________________
         //  Set
-        public void setValue(int _value){
+
+    /**
+     * Sets the value.
+     * @param _value
+     */
+    public void setValue(int _value){
             value = _value;
         }
 
-        public void setKind(String _kind){
+    /**
+     * Sets the kind.
+     * @param _kind
+     */
+    public void setKind(String _kind){
             kind = _kind;
-        }
+       }
 
-        public void setImageDirect(String _direct){
+    /**
+     * Set imageDirect, by parsing the png name.
+     * @param _direct
+     */
+    public void setImageDirect(String _direct){
             imageDirect = _direct;
             cardTexture = new Texture(Gdx.files.internal(imageDirect));
-        }
+    }
 
-        public void setRectangle(Rectangle _rectangle){
+    /**
+     * Set the Rectangle by parsing the new Rectangle.
+     * @param _rectangle
+     */
+    public void setRectangle(Rectangle _rectangle){
             rectangle = _rectangle;
-        }
+    }
 
-        public void setRectangle(){
+    /**
+     * Can be used to reset the rectangle to its prestate (Card.png size)
+     */
+    public void setRectangle(){
             rectangle = new Rectangle();
             rectangle.x = 0;
             rectangle.y = 0;
@@ -63,13 +109,23 @@ public class Cards {
             rectangle.height = 242;
         }
 
-        public void setAbility(Ability _ability){
+    /**
+     * Set the ability.
+     * @param _ability
+     */
+    public void setAbility(Ability _ability){
             ability = _ability;
         }
 
         //________________________________________________
         // Get
-        public Ability getAbilityByValue() {
+
+    /**
+     * Returns ability as enum Ability, by
+     * given cared value.
+     * @return
+     */
+    public Ability getAbilityByValue() {
             switch (this.value) {
                 case 1:
                     return Ability.ACE;
@@ -88,14 +144,18 @@ public class Cards {
                 default:
                     return Ability.NORMAL;
             }
-        }
+    }
 
-        public String getTextureName() {
-            String color = this.kind;
-            int value = this.value;
+    /**
+     * Returns the Texture name of the selected cared.
+     * Name contains kind_value.png, value for J,Q,K,A
+     * is set by the given value via a switch.
+     * @return
+     */
+    public String getTextureName() {
             String val;
 
-            switch (value) {
+            switch (this.value) {
                 case 1:
                     val = "A";
                     break;
@@ -109,52 +169,87 @@ public class Cards {
                     val = "K";
                     break;
                 default:
-                    val = Integer.toString(value);
+                    val = Integer.toString(this.value);
                     break;
-
             }
 
-            return color+"_"+val+".png";
-        }
+            return this.kind+"_"+val+".png";
+    }
 
-        public int getValue(){
+    /**
+     * Return value.
+     * @return
+     */
+    public int getValue(){
             return value;
-        }
+    }
 
-        public String getKind(){
+    /**
+     * Return kind.
+     * @return
+     */
+    public String getKind(){
             return kind;
-        }
+    }
 
-        public String getImageDirect(){
+    /**
+     * Return imageDirect
+     * @return
+     */
+    public String getImageDirect(){
             return imageDirect;
         }
 
-        public Texture getCardTexture(){
+    /**
+     * Retrun CaredTexture
+     * @return
+     */
+    public Texture getCardTexture(){
             return cardTexture;
-        }
+    }
 
-        public Rectangle getRectangle() {
+    /**
+     * Return rectangle.
+     * @return
+     */
+    public Rectangle getRectangle() {
         return rectangle;
     }
 
-        // return the ability as a short for 'game'
-        public Ability getAbility(){
+    /**
+     * return the ability as a short for 'game'
+     * @return
+     */
+    public Ability getAbility(){
             return ability ;
-        }
+    }
 
         //__________________________________________________
         // Other
-        public void editRectangle(float _x, float _y){
+
+    /**
+     * Edit size of Rectangle
+     * @param _x
+     * @param _y
+     */
+    public void editRectangle(float _x, float _y){
             rectangle.x = _x;
             rectangle.y = _y;
     }
 
-        public void editTextureDownBoardCards(){
+    /**
+     *
+     */
+    public void editTextureDownBoardCards(){
             cardTexture = new Texture(Gdx.files.internal("CardBack.png"));
         }
 
         // restores the texture of the card
-        public void restoreTexture(){
+
+    /**
+     * Restores texture of a cared, used for up-side-down cards
+     */
+    public void restoreTexture(){
             switch (value){
                 case(1):    cardTexture = new Texture(Gdx.files.internal(kind+"_A.png")); break;
                 case(11):   cardTexture = new Texture(Gdx.files.internal(kind+"_J.png")); break;
@@ -162,10 +257,12 @@ public class Cards {
                 case(13):   cardTexture = new Texture(Gdx.files.internal(kind+"_K.png")); break;
                 default: cardTexture = new Texture(Gdx.files.internal(kind+"_"+value+".png"));
             }
-        }
+    }
 
-        //  Print
-        public void printCards(){
+    /**
+     * Prints cared in console
+     */
+    public void printCards(){
             System.out.println(kind+", "+value);
         }
 }
